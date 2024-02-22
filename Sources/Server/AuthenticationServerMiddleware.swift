@@ -12,12 +12,6 @@ struct AuthenticationServerMiddleware: Sendable {
     /// The name of the authenticated user.
     var name: String
     
-    /// Creates a new user.
-    /// - Parameter name: The name of the authenticated user.
-    init(name: String) {
-      self.name = name
-    }
-    
     /// The task local value of the currently authenticated user.
     @TaskLocal static var current: User?
   }

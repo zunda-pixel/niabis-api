@@ -21,7 +21,6 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-format", from: "509.0.0"),
     .package(url: "https://github.com/apple/swift-metrics", from: "2.4.1"),
     .package(url: "https://github.com/swift-server/swift-prometheus", exact: "2.0.0-alpha.1"), // TODO
-    .package(url: "https://github.com/supabase-community/supabase-swift", from: "2.3.1"),
   ],
   targets: [
     .executableTarget(
@@ -34,8 +33,6 @@ let package = Package(
         .product(name: "Fluent", package: "fluent"),
         .product(name: "Metrics", package: "swift-metrics"),
         .product(name: "Prometheus", package: "swift-prometheus"),
-        .product(name: "Supabase", package: "supabase-swift"),
-        .product(name: "Auth", package: "supabase-swift"),
       ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
