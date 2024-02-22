@@ -69,7 +69,7 @@ final class ServerTests: XCTestCase {
 
     try XCTAssertEqual(response2.noContent, .init())
   }
-  
+
   func testSignUpAndLogin() async throws {
     let userName = "test@test.com"
     let password = UUID().uuidString
