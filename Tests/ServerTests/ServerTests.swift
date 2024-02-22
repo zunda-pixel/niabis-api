@@ -3,7 +3,7 @@ import FluentMySQLDriver
 import Vapor
 import XCTest
 
-@testable import App
+@testable import Server
 
 final class ServerTests: XCTestCase {
   let app: Application = {
