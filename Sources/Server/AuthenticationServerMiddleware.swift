@@ -1,31 +1,31 @@
-import OpenAPIRuntime
 import HTTPTypes
+import OpenAPIRuntime
 
 /// A server middleware that authenticates the incoming user based on the value of
 /// the `Authorization` header field and injects the identifier `User` information
 /// into a task local value, allowing the request handler to use it.
 struct AuthenticationServerMiddleware: Sendable {
-  
+
   /// Information about an authenticated user.
   struct User: Hashable {
-    
+
     /// The name of the authenticated user.
     var name: String
-    
+
     /// Creates a new user.
     /// - Parameter name: The name of the authenticated user.
     init(name: String) {
       self.name = name
     }
-    
+
     /// The task local value of the currently authenticated user.
     @TaskLocal static var current: User?
   }
-  
+
   /// The closure that authenticates the user based on the value of the `Authorization`
   /// header field.
   private let authenticate: @Sendable (String) -> User?
-  
+
   /// Creates a new middleware.
   /// - Parameter authenticate: The closure that authenticates the user based on the value
   ///   of the `Authorization` header field.
@@ -40,8 +40,10 @@ extension AuthenticationServerMiddleware: ServerMiddleware {
     body: HTTPBody?,
     metadata: ServerRequestMetadata,
     operationID: String,
-    next: @Sendable (HTTPRequest, HTTPBody?, ServerRequestMetadata) async throws -> (HTTPResponse, HTTPBody?)
-  ) async throws -> (HTTPResponse, HTTPBody?) {    
+    next: @Sendable (HTTPRequest, HTTPBody?, ServerRequestMetadata) async throws -> (
+      HTTPResponse, HTTPBody?
+    )
+  ) async throws -> (HTTPResponse, HTTPBody?) {
     // Extracts the `Authorization` value, if present.
     // If no `Authorization` header field value was provided, no User is injected into
     // the task local.

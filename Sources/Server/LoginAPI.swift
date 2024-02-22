@@ -10,14 +10,13 @@ extension APIHandler {
     )
     return .noContent(.init())
   }
-  
-  
+
   func login(_ input: Operations.login.Input) async throws -> Operations.login.Output {
     try await supabase.auth.signIn(
       email: input.query.userName,
       password: input.query.password
     )
-    
+
     return .noContent(.init())
   }
 }

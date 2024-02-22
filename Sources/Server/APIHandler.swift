@@ -1,5 +1,5 @@
-import Vapor
 import Supabase
+import Vapor
 
 actor APIHandler: APIProtocol {
   let app: Application
