@@ -30,7 +30,7 @@
     {
       "identity" : "fluent",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/fluent.git",
+      "location" : "https://github.com/vapor/fluent",
       "state" : {
         "revision" : "a586a5d4164f23a0ee4e02e1f467b9bbef0c9f1c",
         "version" : "4.9.0"
@@ -138,7 +138,7 @@
     {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
         "revision" : "c8ed701b513cf5177118a175d85fbbbcd707ab41",
         "version" : "1.3.0"
@@ -228,7 +228,7 @@
     {
       "identity" : "swift-metrics",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-metrics.git",
+      "location" : "https://github.com/apple/swift-metrics",
       "state" : {
         "revision" : "971ba26378ab69c43737ee7ba967a896cb74c0d1",
         "version" : "2.4.1"
@@ -356,8 +356,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
       "state" : {
-        "revision" : "9da9d14f43bc1b32b384f0b4eb231b8a5a851dee",
-        "version" : "4.92.3"
+        "revision" : "3a7da193a2937472b252b8db210897e7abf37b47",
+        "version" : "4.92.4"
       }
     },
     {
