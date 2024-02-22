@@ -37,9 +37,6 @@ let package = Package(
         .product(name: "Supabase", package: "supabase-swift"),
         .product(name: "Auth", package: "supabase-swift"),
       ],
-      resources: [
-        .process("Resources"),
-      ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
       ]
