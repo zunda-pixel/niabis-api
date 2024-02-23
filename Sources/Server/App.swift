@@ -15,7 +15,15 @@ struct App {
     defer { app.shutdown() }
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
-
+    app.get(".well-known", "apple-app-site-association") { _ in
+      return AppSiteAssociation(
+        webCredentials: .init(
+          apps: [
+            "PU5HXZ4FZ2.com.zunda.niabis"
+          ]
+        )
+      )
+    }
     let registry = PrometheusCollectorRegistry()
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
 
