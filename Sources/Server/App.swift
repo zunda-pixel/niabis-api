@@ -63,7 +63,7 @@ struct App {
       serverURL: URL(string: "/api")!,
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
-        MetricsMiddleware(counterPrefix: "ToastServer"),
+        MetricsMiddleware(counterPrefix: "NiaBisServer"),
       ]
     )
 

@@ -16,7 +16,7 @@ actor LoggingMiddleware {
   }
 
   fileprivate static var defaultLogger: Logger {
-    Logger(label: "com.toast.toast-server.logging-middleware")
+    Logger(label: "com.zunda.niabis-server.logging-middleware")
   }
 }
 
