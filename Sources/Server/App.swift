@@ -15,7 +15,15 @@ struct App {
     defer { app.shutdown() }
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
-
+    app.get(".well-known", "apple-app-site-association") { _ in
+      return AppSiteAssociation(
+        webCredentials: .init(
+          apps: [
+            "PU5HXZ4FZ2.com.zunda.niabis"
+          ]
+        )
+      )
+    }
     let registry = PrometheusCollectorRegistry()
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
 
@@ -63,7 +71,7 @@ struct App {
       serverURL: URL(string: "/api")!,
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
-        MetricsMiddleware(counterPrefix: "ToastServer"),
+        MetricsMiddleware(counterPrefix: "NiaBisServer"),
       ]
     )
 
