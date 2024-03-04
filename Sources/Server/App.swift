@@ -1,5 +1,5 @@
 import Fluent
-import FluentMySQLDriver
+import FluentPostgresDriver
 import Metrics
 import OpenAPIVapor
 import Prometheus
@@ -37,16 +37,18 @@ struct App {
     let fileMiddleware = FileMiddleware(
       publicDirectory: app.directory.publicDirectory
     )
+    
+    let configuration: SQLPostgresConfiguration = .init(
+      hostname: Environment.get("DATABASE_HOST")!,
+      username: Environment.get("DATABASE_USERNAME")!,
+      password: Environment.get("DATABASE_PASSWORD")!,
+      database: Environment.get("DATABASE_NAME")!,
+      tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
+    )
 
     app.databases.use(
-      .mysql(
-        hostname: Environment.get("DATABASE_HOST")!,
-        username: Environment.get("DATABASE_USERNAME")!,
-        password: Environment.get("DATABASE_PASSWORD")!,
-        database: Environment.get("DATABASE_NAME")!,
-        tlsConfiguration: .makePreSharedKeyConfiguration()
-      ),
-      as: .mysql
+      .postgres(configuration: configuration),
+      as: .psql
     )
 
     switch app.environment {
