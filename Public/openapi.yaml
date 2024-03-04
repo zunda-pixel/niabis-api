@@ -22,9 +22,9 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://niabis.com/api/
+  - url: https://api.niabis.com/
     description: Producction deployment.
-  - url: http://localhost:8080/api/
+  - url: http://localhost:8080/
     description: Local Host deployment.
 tags:
   - name: User
@@ -36,7 +36,7 @@ paths:
   /signup:
     post:
       tags:
-        - Login
+        - SignUp/In
       summary: Sign Up
       operationId: signUp
       parameters:
@@ -54,13 +54,13 @@ paths:
             type: string
       responses:
         '204':
-          description: Deleted
-  /login:
+          description: Logined
+  /signin:
     post:
       tags:
-        - Login
-      summary: Login
-      operationId: login
+        - SignUp/In
+      summary: Sign In
+      operationId: signIn
       parameters:
         - name: userName
           in: query
@@ -103,12 +103,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: User not found
-        '303':
-          description: User not found
-          headers:
-            location:
-              schema:
-                type: string
               
     post:
       tags:
