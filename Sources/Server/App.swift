@@ -37,7 +37,7 @@ struct App {
     let fileMiddleware = FileMiddleware(
       publicDirectory: app.directory.publicDirectory
     )
-    
+
     let configuration: SQLPostgresConfiguration = .init(
       hostname: Environment.get("DATABASE_HOST")!,
       username: Environment.get("DATABASE_USERNAME")!,

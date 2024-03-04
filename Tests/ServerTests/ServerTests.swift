@@ -1,6 +1,6 @@
+import FluentPostgresDriver
 import Vapor
 import XCTest
-import FluentPostgresDriver
 
 @testable import Server
 
