@@ -1,5 +1,4 @@
-import Fluent
-import FluentMySQLDriver
+import FluentPostgresDriver
 import Vapor
 import XCTest
 
@@ -9,14 +8,17 @@ final class ServerTests: XCTestCase {
   let app: Application = {
     let app = Application()
 
+    let configuration: SQLPostgresConfiguration = .init(
+      hostname: Environment.get("DATABASE_HOST")!,
+      username: Environment.get("DATABASE_USERNAME")!,
+      password: Environment.get("DATABASE_PASSWORD")!,
+      database: Environment.get("DATABASE_NAME")!,
+      tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
+    )
+
     app.databases.use(
-      .mysql(
-        hostname: Environment.get("DATABASE_HOST")!,
-        username: Environment.get("DATABASE_USERNAME")!,
-        password: Environment.get("DATABASE_PASSWORD")!,
-        database: Environment.get("DATABASE_NAME")!
-      ),
-      as: .mysql
+      .postgres(configuration: configuration),
+      as: .psql
     )
     return app
   }()

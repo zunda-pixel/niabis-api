@@ -46,12 +46,12 @@
       }
     },
     {
-      "identity" : "fluent-mysql-driver",
+      "identity" : "fluent-postgres-driver",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/fluent-mysql-driver",
+      "location" : "https://github.com/vapor/fluent-postgres-driver",
       "state" : {
-        "revision" : "acfd0e77a9f668cbe8d9f56939e9fb187952f99d",
-        "version" : "4.4.0"
+        "revision" : "a538fc647f82d915eb84e0a12ca9b08c513e57c4",
+        "version" : "2.8.0"
       }
     },
     {
@@ -64,30 +64,30 @@
       }
     },
     {
-      "identity" : "mysql-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/mysql-kit.git",
-      "state" : {
-        "revision" : "a9375f89057e6b2f86878b33312a33f9ba039819",
-        "version" : "4.7.2"
-      }
-    },
-    {
-      "identity" : "mysql-nio",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/mysql-nio.git",
-      "state" : {
-        "revision" : "605fe1d67cc87a52fe248799c9744f3edd976b92",
-        "version" : "1.7.1"
-      }
-    },
-    {
       "identity" : "openapikit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattpolzin/OpenAPIKit",
       "state" : {
-        "revision" : "283454875cc6e5b2801d184d65835b92252d1784",
-        "version" : "3.1.2"
+        "revision" : "33a9984b4af03f00e68b8ee85f1273cb826af04f",
+        "version" : "3.1.3"
+      }
+    },
+    {
+      "identity" : "postgres-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/postgres-kit.git",
+      "state" : {
+        "revision" : "475bf6f04ee1840917a70c32b48e4a724df4ccaf",
+        "version" : "2.12.3"
+      }
+    },
+    {
+      "identity" : "postgres-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/postgres-nio.git",
+      "state" : {
+        "revision" : "69ccfdf4c80144d845e3b439961b7ec6cd7ae33f",
+        "version" : "1.20.2"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio-extras.git",
       "state" : {
-        "revision" : "363da63c1966405764f380c627409b2f9d9e710b",
-        "version" : "1.21.0"
+        "revision" : "a3b640d7dc567225db7c94386a6e71aded1bfa63",
+        "version" : "1.22.0"
       }
     },
     {
