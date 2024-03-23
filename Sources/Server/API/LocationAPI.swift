@@ -48,7 +48,7 @@ extension APIHandler {
     )
 
     let response = try await app.client.get(for: request)
-    
+
     let locationsResponse = try response.content.decode(TripadvisorKit.LocationsResponse.self)
 
     return locationsResponse.locations.first
