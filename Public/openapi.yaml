@@ -77,6 +77,37 @@ paths:
       responses:
         '204':
           description: Deleted
+  
+  /location:
+    get:
+      tags:
+        - Location
+      summary: Find Location
+      description: Returns a single Location
+      operationId: getLocation
+      parameters:
+        - name: locationName
+          in: query
+          description: Name of location to return
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: language of search
+          required: true
+          schema:
+            type: string
+            enum: ["ar", "zh", "zh_TW", "da", "nl", "en_AU", "en_CA", "en_HK", "en_IN", "en_IE", "en_MY", "en_NZ", "en_PH", "en_SG", "en_ZA", "en_UK", "en", "fr", "fr_BE", "fr_CA", "fr_CH", "de_AT", "de", "el", "iw", "in", "it", "it_CH", "ja", "ko", "no", "pt_PT", "pt", "ru", "es_AR", "es_CO", "es_MX", "es_PE", "es", "es_VE", "es_CL", "sv", "th", "tr", "vi"]
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          description: location not found
   /user:
     get:
       tags:
@@ -180,6 +211,38 @@ paths:
 
 components:
   schemas:
+    LabelContent:
+      type: object
+      description: Content with Label
+      properties:
+        name:
+          type: string
+          description: Name
+        localizedName:
+          type: string
+          description: Localized Name
+      required:
+        - name
+        - localizedName
+    Location:
+      type: object
+      description: Location
+      properties:
+        id:
+          type: integer
+          description: ID
+        description:
+          type: string
+          description: Description
+        cuisines:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelContent'
+      required:
+        - id
+        - description
+        - cuisines
+        
     User:
       type: object
       description: A value with the greeting contents.
