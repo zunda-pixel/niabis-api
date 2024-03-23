@@ -16,10 +16,12 @@ final class User: Model {
   @Field(key: "age")
   var age: Int
 
-  init() {}
+  init() {
+    id = UUID()
+  }
 
   init(
-    id: UUID?,
+    id: UUID,
     firstName: String,
     lastName: String,
     age: Int
