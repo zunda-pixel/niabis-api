@@ -29,9 +29,9 @@ extension APIHandler {
       language: language
     )
 
-    let (data, _) = try await URLSession.shared.data(for: request)
+    let response = try await app.client.get(for: request)
 
-    let location = try JSONDecoder.tripadvisor.decode(TripadvisorKit.Location.self, from: data)
+    let location = try response.content.decode(TripadvisorKit.Location.self)
 
     return location
   }
@@ -47,10 +47,18 @@ extension APIHandler {
       language: language
     )
 
-    let (data, _) = try await URLSession.shared.data(for: request)
+    let response = try await app.client.get(for: request)
+    
+    let locationsResponse = try response.content.decode(TripadvisorKit.LocationsResponse.self)
 
-    let response = try JSONDecoder.tripadvisor.decode(LocationsResponse.self, from: data)
+    return locationsResponse.locations.first
+  }
+}
 
-    return response.locations.first
+extension Client {
+  func get(for request: some TripadvisorKit.Request) async throws -> ClientResponse {
+    let uri = URI(string: request.url.absoluteString)
+    let heaers: [(String, String)] = request.headers.map { ($0.name.rawName, $0.value) }
+    return try await self.get(uri, headers: .init(heaers))
   }
 }
