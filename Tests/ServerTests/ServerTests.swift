@@ -27,7 +27,7 @@ final class ServerTests: XCTestCase {
     app.shutdown()
   }
 
-  var handler: any APIProtocol {
+  var handler: some APIProtocol {
     return APIHandler(app: app)
   }
 
