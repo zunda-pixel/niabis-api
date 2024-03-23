@@ -3,13 +3,7 @@ import Vapor
 actor APIHandler: APIProtocol {
   let app: Application
   let tripadvisorApiKey: String
-  var tripadvisorRefererURL: URL? {
-    #if DEBUG
-      return URL(string: "https://api.niabis.com")!
-    #else
-      return nil
-    #endif
-  }
+  let tripadvisorRefererURL = URL(string: "https://api.niabis.com")!
 
   init(app: Application) {
     self.app = app
