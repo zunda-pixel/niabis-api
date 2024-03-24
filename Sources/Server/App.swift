@@ -41,7 +41,7 @@ struct App {
       database: Environment.get("DATABASE_NAME")!,
       tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
     )
-    
+
     configuration.searchPath = ["public", "auth"]
 
     app.databases.use(
@@ -74,7 +74,7 @@ struct App {
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
         MetricsMiddleware(counterPrefix: "NiaBisServer"),
-        BearerAuthenticatorMiddleware(app: app)
+        BearerAuthenticatorMiddleware(app: app),
       ]
     )
 

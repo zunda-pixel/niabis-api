@@ -15,7 +15,7 @@ final class ServerTests: XCTestCase {
       database: Environment.get("DATABASE_NAME")!,
       tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
     )
-    
+
     configuration.searchPath = ["public", "auth"]
 
     app.databases.use(
