@@ -34,10 +34,6 @@ struct App {
       return String(decoding: buffer, as: UTF8.self)
     }
 
-    let fileMiddleware = FileMiddleware(
-      publicDirectory: app.directory.publicDirectory
-    )
-
     let configuration: SQLPostgresConfiguration = .init(
       hostname: Environment.get("DATABASE_HOST")!,
       username: Environment.get("DATABASE_USERNAME")!,
@@ -60,6 +56,9 @@ struct App {
       fatalError()
     }
 
+    let fileMiddleware = FileMiddleware(
+      publicDirectory: app.directory.publicDirectory
+    )
     app.middleware.use(fileMiddleware, at: .end)
 
     app.middleware.use(CORSMiddleware(), at: .beginning)
