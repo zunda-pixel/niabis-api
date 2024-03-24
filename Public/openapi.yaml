@@ -202,36 +202,22 @@ components:
         
     User:
       type: object
-      description: A value with the greeting contents.
+      description: A value with the User contents.
       properties:
         id:
           type: string
           format: uuid
-          description: The string representation of the greeting.
-        firstName:
+          description: Id of User
+        email:
           type: string
-          description: The string representation of the greeting.
-        lastName:
-          type: string
-          description: The string representation of the greeting.
-        age:
-          type: integer
-          description: The string representation of the greeting.
+          description: Email address
       required:
         - id
-        - firstName
-        - lastName
-        - age
+        - email
     UpdateUser:
       type: object
       description: A value with the user contents.
       properties:
-        firstName:
+        email:
           type: string
-          description: The string representation of the greeting.
-        lastName:
-          type: string
-          description: The string representation of the greeting.
-        age:
-          type: integer
-          description: The string representation of the greeting.
+          description: Email address.
