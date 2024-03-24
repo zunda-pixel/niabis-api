@@ -29,16 +29,8 @@ extension APIHandler {
 
     var query = User.query(on: app.db)
 
-    if let firstName = user.firstName {
-      query = query.set(\.$firstName, to: firstName)
-    }
-
-    if let lastName = user.lastName {
-      query = query.set(\.$lastName, to: lastName)
-    }
-
-    if let age = user.age {
-      query = query.set(\.$age, to: age)
+    if let email = user.email {
+      query = query.set(\.$email, to: email)
     }
 
     try await query
