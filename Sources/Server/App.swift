@@ -34,17 +34,15 @@ struct App {
       return String(decoding: buffer, as: UTF8.self)
     }
 
-    let fileMiddleware = FileMiddleware(
-      publicDirectory: app.directory.publicDirectory
-    )
-
-    let configuration: SQLPostgresConfiguration = .init(
+    var configuration: SQLPostgresConfiguration = .init(
       hostname: Environment.get("DATABASE_HOST")!,
       username: Environment.get("DATABASE_USERNAME")!,
       password: Environment.get("DATABASE_PASSWORD")!,
       database: Environment.get("DATABASE_NAME")!,
       tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
     )
+
+    configuration.searchPath = ["public", "auth"]
 
     app.databases.use(
       .postgres(configuration: configuration),
@@ -60,6 +58,9 @@ struct App {
       fatalError()
     }
 
+    let fileMiddleware = FileMiddleware(
+      publicDirectory: app.directory.publicDirectory
+    )
     app.middleware.use(fileMiddleware, at: .end)
 
     app.middleware.use(CORSMiddleware(), at: .beginning)
@@ -73,6 +74,7 @@ struct App {
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
         MetricsMiddleware(counterPrefix: "NiaBisServer"),
+        BearerAuthenticatorMiddleware(app: app),
       ]
     )
 

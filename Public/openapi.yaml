@@ -32,52 +32,7 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
-paths:
-  /signup:
-    post:
-      tags:
-        - SignUp/In
-      summary: Sign Up
-      operationId: signUp
-      parameters:
-        - name: userName
-          in: query
-          description: Login User Name
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: Login Password
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Logined
-  /signin:
-    post:
-      tags:
-        - SignUp/In
-      summary: Sign In
-      operationId: signIn
-      parameters:
-        - name: userName
-          in: query
-          description: Login User Name
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: Login Password
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Deleted
-  
+paths:  
   /location:
     get:
       tags:
@@ -110,6 +65,8 @@ paths:
           description: location not found
   /user:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - User
       summary: Find user by ID
@@ -130,49 +87,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: User not found
-              
-    post:
-      tags:
-        - User
-      summary: Post a new user
-      description: Post a new user
-      operationId: postUser
-      requestBody:
-        required: true
-        content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid input
-    delete:
-      tags:
-        - User
-      summary: Delete user by ID
-      description: Delete user by ID
-      operationId: deleteUserByID
-      parameters:
-        - name: userID
-          in: query
-          description: ID of user to delte
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '204':
-          description: Deleted
         '400':
           description: Invalid ID supplied
         '404':
@@ -209,7 +123,16 @@ paths:
         '404':
           description: User not found
 
+security:
+  - bearerAuth: []
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Credentials or access token for API
   schemas:
     LabelContent:
       type: object
@@ -245,36 +168,22 @@ components:
         
     User:
       type: object
-      description: A value with the greeting contents.
+      description: A value with the User contents.
       properties:
         id:
           type: string
           format: uuid
-          description: The string representation of the greeting.
-        firstName:
+          description: Id of User
+        email:
           type: string
-          description: The string representation of the greeting.
-        lastName:
-          type: string
-          description: The string representation of the greeting.
-        age:
-          type: integer
-          description: The string representation of the greeting.
+          description: Email address
       required:
         - id
-        - firstName
-        - lastName
-        - age
+        - email
     UpdateUser:
       type: object
       description: A value with the user contents.
       properties:
-        firstName:
+        email:
           type: string
-          description: The string representation of the greeting.
-        lastName:
-          type: string
-          description: The string representation of the greeting.
-        age:
-          type: integer
-          description: The string representation of the greeting.
+          description: Email address.
