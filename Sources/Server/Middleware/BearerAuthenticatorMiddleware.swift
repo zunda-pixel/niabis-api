@@ -43,9 +43,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     guard Date.now < expiredDate else {
       throw Abort(.forbidden)
     }
-    // Add user id to header
-    var request = request
-    request.headerFields[.userID] = userAuthentication.userID.uuidString
+
     return try await next(request, body, metadata)
   }
 }
