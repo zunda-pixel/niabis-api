@@ -2,6 +2,7 @@ import Foundation
 import OpenAPIRuntime
 import Vapor
 import HTTPTypes
+import SQLKit
 
 struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
@@ -20,11 +21,26 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     guard let token = header.bearerAuthorization?.token else {
       throw Abort(.notAcceptable)
     }
-    let userAuthentication = try await UserAuthentication.query(on: app.db).filter(\.$bearerToken, .equal, token).first()
-    guard let userAuthentication else {
+    let database = app.db as! SQLDatabase
+    let row = try await database.select()
+      .from("user_authentications")
+      .columns("userID", "bearerToken", "timestamp")
+      .where("bearerToken", .equal, token)
+      .first()
+    
+    guard let row else {
       throw Abort(.forbidden)
     }
-    guard userAuthentication.timestamp.addingTimeInterval(1_000_000) < Date.now else {
+    
+    let userAuthentication = UserAuthentication(
+      userID: try row.decode(column: "userID", as: UUID.self),
+      bearerToken: try row.decode(column: "bearerToken", as: String.self),
+      timestamp: try row.decode(column: "timestamp", as: Date.self)
+    )
+    
+    let expiredDate = userAuthentication.timestamp.addingTimeInterval(1_000_000)
+    
+    guard Date.now < expiredDate else {
       throw Abort(.forbidden)
     }
     // Add user id to header
