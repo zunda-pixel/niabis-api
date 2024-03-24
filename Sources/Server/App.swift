@@ -34,13 +34,15 @@ struct App {
       return String(decoding: buffer, as: UTF8.self)
     }
 
-    let configuration: SQLPostgresConfiguration = .init(
+    var configuration: SQLPostgresConfiguration = .init(
       hostname: Environment.get("DATABASE_HOST")!,
       username: Environment.get("DATABASE_USERNAME")!,
       password: Environment.get("DATABASE_PASSWORD")!,
       database: Environment.get("DATABASE_NAME")!,
       tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
     )
+    
+    configuration.searchPath = ["public", "auth"]
 
     app.databases.use(
       .postgres(configuration: configuration),
