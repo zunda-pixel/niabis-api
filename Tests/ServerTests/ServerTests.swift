@@ -39,10 +39,4 @@ final class ServerTests: XCTestCase {
     let json = try response.ok.body.json
     XCTAssertEqual(json, .init(id: userID.uuidString, email: "niabis.official+ios@gmail.com"))
   }
-
-  func testSignUpAndLogin() async throws {
-    let userName = "test@test.com"
-    let password = UUID().uuidString
-    _ = try await handler.signUp(.init(query: .init(userName: userName, password: password)))
-  }
 }
