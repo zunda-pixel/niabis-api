@@ -65,6 +65,8 @@ paths:
           description: location not found
   /user:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - User
       summary: Find user by ID
@@ -121,7 +123,16 @@ paths:
         '404':
           description: User not found
 
+security:
+  - bearerAuth: []
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Credentials or access token for API
   schemas:
     LabelContent:
       type: object
