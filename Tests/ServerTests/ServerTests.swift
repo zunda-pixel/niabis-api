@@ -33,45 +33,11 @@ final class ServerTests: XCTestCase {
     return APIHandler(app: app)
   }
 
-  func testPostUser() async throws {
-    let user: Components.Schemas.User = .init(
-      id: UUID().uuidString,
-      firstName: "fisrtName",
-      lastName: "lastName",
-      age: 21
-    )
-
-    let response = try await handler.postUser(.init(body: .json(user)))
-
-    try XCTAssertEqual(response.ok.body.json, user)
-  }
-
   func testGetUserById() async throws {
-    let user: Components.Schemas.User = .init(
-      id: UUID().uuidString,
-      firstName: "fisrtName",
-      lastName: "lastName",
-      age: 21
-    )
-
-    _ = try await handler.postUser(.init(body: .json(user)))
-
-    let response2 = try await handler.getUserById(query: .init(userID: user.id))
-    try XCTAssertEqual(response2.ok.body.json, user)
-  }
-
-  func testDeleteUserById() async throws {
-    let user: Components.Schemas.User = .init(
-      id: UUID().uuidString,
-      firstName: "fisrtName",
-      lastName: "lastName",
-      age: 21
-    )
-
-    _ = try await handler.postUser(.init(body: .json(user)))
-    let response2 = try await handler.deleteUserByID(.init(query: .init(userID: user.id)))
-
-    try XCTAssertEqual(response2.noContent, .init())
+    let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
+    let json = try response.ok.body.json
+    XCTAssertEqual(json, .init(id: userID.uuidString, email: "niabis.official+ios@gmail.com"))
   }
 
   func testSignUpAndLogin() async throws {

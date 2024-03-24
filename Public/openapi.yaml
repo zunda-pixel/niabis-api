@@ -32,52 +32,7 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
-paths:
-  /signup:
-    post:
-      tags:
-        - SignUp/In
-      summary: Sign Up
-      operationId: signUp
-      parameters:
-        - name: userName
-          in: query
-          description: Login User Name
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: Login Password
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Logined
-  /signin:
-    post:
-      tags:
-        - SignUp/In
-      summary: Sign In
-      operationId: signIn
-      parameters:
-        - name: userName
-          in: query
-          description: Login User Name
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: Login Password
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Deleted
-  
+paths:  
   /location:
     get:
       tags:
