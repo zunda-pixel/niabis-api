@@ -51,7 +51,7 @@ extension APIHandler {
 
     let response = try await app.client.get(for: request)
 
-    let location = try response.content.decode(TripadvisorKit.Location.self)
+    let location = try response.content.decode(TripadvisorKit.Location.self, using: JSONDecoder.tripadvisor)
 
     return location
   }
@@ -69,7 +69,7 @@ extension APIHandler {
 
     let response = try await app.client.get(for: request)
 
-    let locationsResponse = try response.content.decode(TripadvisorKit.LocationsResponse.self)
+    let locationsResponse = try response.content.decode(TripadvisorKit.LocationsResponse.self, using: JSONDecoder.tripadvisor)
 
     return locationsResponse.locations.first
   }
