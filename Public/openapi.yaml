@@ -161,10 +161,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LabelContent'
+        photoURLs:
+          type: array
+          items:
+            type: string
+            format: uri
+            description: Photo URL
       required:
         - id
         - description
         - cuisines
+        - photoURLs
         
     User:
       type: object
