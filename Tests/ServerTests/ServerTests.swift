@@ -39,4 +39,47 @@ final class ServerTests: XCTestCase {
     let json = try response.ok.body.json
     XCTAssertEqual(json, .init(id: userID.uuidString, email: "niabis.official+ios@gmail.com"))
   }
+
+  func testGetLocation() async throws {
+    let response = try await handler.getLocation(
+      query: .init(
+        locationName: "Old Ebbitt Grill",
+        language: .en
+      )
+    )
+
+    let location = try response.ok.body.json
+
+    XCTAssertEqual(location.id, 450339)
+    XCTAssertEqual(location.description, "")
+    XCTAssertEqual(
+      location.cuisines,
+      [
+        .init(name: "american", localizedName: "American"),
+        .init(name: "bar", localizedName: "Bar"),
+        .init(name: "seafood", localizedName: "Seafood"),
+        .init(name: "soups", localizedName: "Soups"),
+      ]
+    )
+    XCTAssertEqual(
+      location.photoURLs,
+      [
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/06/09/b0/2d/old-ebbitt-grill.jpg"
+        )!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/07/e2/65/1a/old-ebbitt-grill.jpg"
+        )!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/05/bc/2b/37/old-ebbitt-grill.jpg"
+        )!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/07/e2/65/31/old-ebbitt-grill.jpg"
+        )!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/07/e2/65/2b/old-ebbitt-grill.jpg"
+        )!,
+      ].map(\.absoluteString)
+    )
+  }
 }
