@@ -17,6 +17,26 @@ extension APIHandler {
 
     return .ok(.init(body: .json(.init(location: locationDetail))))
   }
+  
+  fileprivate func locationPhotoURLs(
+    locationId: TripadvisorKit.Location.ID,
+    language: Language
+  ) async throws -> [URL] {
+    let request = LocationPhotosRequest(
+      apiKey: tripadvisorApiKey,
+      locationId: locationId,
+      referer: tripadvisorRefererURL,
+      language: language
+    )
+    
+    let response = try await app.client.get(for: request)
+
+    let photosResponse = try response.content.decode(TripadvisorKit.PhotosResponse.self, using: JSONDecoder.tripadvisor)
+
+    let images = photosResponse.photos.map { $0.image.original ?? $0.image.large }
+    
+    return images.map(\.url)
+  }
 
   fileprivate func locationDetail(
     locationId: TripadvisorKit.Location.ID,
