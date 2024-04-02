@@ -15,7 +15,9 @@ extension APIHandler {
 
     let locationDetail = try await locationDetail(locationId: location.id, language: language)
 
-    return .ok(.init(body: .json(.init(location: locationDetail))))
+    let photosURL = try await locationPhotoURLs(locationId: location.id, language: language)
+    
+    return .ok(.init(body: .json(.init(location: locationDetail, photoURLs: photosURL))))
   }
   
   fileprivate func locationPhotoURLs(
