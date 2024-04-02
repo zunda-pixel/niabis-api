@@ -32,28 +32,7 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
-paths:
-  /token:
-    get:
-      tags:
-        - Authorization
-      summary: Generate token
-      operationId: getToken
-      parameters:
-        - name: userID
-          in: query
-          description: ID of user to return
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Token'
+paths:  
   /location:
     get:
       tags:
@@ -215,14 +194,3 @@ components:
         email:
           type: string
           description: Email address.
-    Token:
-      type: object
-      description: A value with the Token contents.
-      properties:
-        token:
-          type: string
-          description: Email address.
-        expireDate:
-          type: number
-          format: double
-          description: Expired date
