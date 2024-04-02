@@ -8,18 +8,36 @@ extension APIHandler {
     let language: Language = .init(rawValue: input.query.language.rawValue)!
 
     guard
-      let location = try await searchLocation(query: input.query.locationName, language: language)
+      let location = try await searchLocation(
+        query: input.query.locationName,
+        language: language
+      )
     else {
       return .notFound(.init())
     }
 
-    let locationDetail = try await locationDetail(locationId: location.id, language: language)
+    let locationDetail = try await locationDetail(
+      locationId: location.id,
+      language: language
+    )
 
-    let photosURL = try await locationPhotoURLs(locationId: location.id, language: language)
-    
-    return .ok(.init(body: .json(.init(location: locationDetail, photoURLs: photosURL))))
+    let photosURL = try await locationPhotoURLs(
+      locationId: location.id,
+      language: language
+    )
+
+    return .ok(
+      .init(
+        body: .json(
+          .init(
+            location: locationDetail,
+            photoURLs: photosURL
+          )
+        )
+      )
+    )
   }
-  
+
   fileprivate func locationPhotoURLs(
     locationId: TripadvisorKit.Location.ID,
     language: Language
@@ -30,13 +48,16 @@ extension APIHandler {
       referer: tripadvisorRefererURL,
       language: language
     )
-    
+
     let response = try await app.client.get(for: request)
 
-    let photosResponse = try response.content.decode(TripadvisorKit.PhotosResponse.self, using: JSONDecoder.tripadvisor)
+    let photosResponse = try response.content.decode(
+      TripadvisorKit.PhotosResponse.self,
+      using: JSONDecoder.tripadvisor
+    )
 
     let images = photosResponse.photos.map { $0.image.original ?? $0.image.large }
-    
+
     return images.map(\.url)
   }
 
@@ -53,7 +74,10 @@ extension APIHandler {
 
     let response = try await app.client.get(for: request)
 
-    let location = try response.content.decode(TripadvisorKit.Location.self, using: JSONDecoder.tripadvisor)
+    let location = try response.content.decode(
+      TripadvisorKit.Location.self,
+      using: JSONDecoder.tripadvisor
+    )
 
     return location
   }
@@ -71,7 +95,10 @@ extension APIHandler {
 
     let response = try await app.client.get(for: request)
 
-    let locationsResponse = try response.content.decode(TripadvisorKit.LocationsResponse.self, using: JSONDecoder.tripadvisor)
+    let locationsResponse = try response.content.decode(
+      TripadvisorKit.LocationsResponse.self,
+      using: JSONDecoder.tripadvisor
+    )
 
     return locationsResponse.locations.first
   }
