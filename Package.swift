@@ -11,12 +11,6 @@ let package = Package(
     .watchOS(.v6),
     .visionOS(.v1)
   ],
-  products: [
-    .library(
-      name: "NiaBisClient",
-      targets: ["NiaBisClient"]
-    ),
-  ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.0.0"),
     .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.0.0"),
@@ -30,12 +24,6 @@ let package = Package(
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.0.1"),
   ],
   targets: [
-    .target(
-      name: "NiaBisClient",
-      plugins: [
-        .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
-      ]
-    ),
     .executableTarget(
       name: "Server",
       dependencies: [
