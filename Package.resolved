@@ -365,8 +365,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server/swift-prometheus",
       "state" : {
-        "revision" : "bc4d19a990c6c2291f1a465b8767b99f1a152855",
-        "version" : "2.0.0-alpha.1"
+        "revision" : "bfcd4bbfabe11aae4b035424ee9724582e288501",
+        "version" : "2.0.0-alpha.2"
       }
     },
     {
