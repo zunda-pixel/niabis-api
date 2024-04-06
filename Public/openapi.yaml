@@ -223,6 +223,9 @@ components:
           type: string
           description: Email address.
         expireDate:
-          type: number
-          format: double
+          type: string
+          format: date-time 
           description: Expired date
+      required:
+        - token
+        - expireDate
