@@ -1,5 +1,5 @@
-import JWTKit
 import Foundation
+import JWTKit
 import Vapor
 
 extension APIHandler {
@@ -23,14 +23,20 @@ extension APIHandler {
       userId: .init(value: input.query.userID),
       expiration: .init(value: .distantFuture)
     )
-    
+
     try await userToken.create(on: app.db)
-    
+
     let token = try await app.jwt.keys.sign(payload)
-    
-    return .ok(.init(body: .json(.init(
-      token: token,
-      expireDate: payload.expiration.value
-    ))))
+
+    return .ok(
+      .init(
+        body: .json(
+          .init(
+            token: token,
+            expireDate: payload.expiration.value
+          )
+        )
+      )
+    )
   }
 }

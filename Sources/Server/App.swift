@@ -1,11 +1,11 @@
 import Fluent
 import FluentPostgresDriver
+import JWT
+import JWTKit
 import Metrics
 import OpenAPIVapor
 import Prometheus
 import Vapor
-import JWTKit
-import JWT
 
 @main
 struct App {
@@ -31,7 +31,7 @@ struct App {
 
     let privateKey = try EdDSA.PrivateKey(curve: .ed25519)
     await app.jwt.keys.addEdDSA(key: privateKey)
-    
+
     app.get("metrics") { request in
       var buffer: [UInt8] = []
       buffer.reserveCapacity(1024)

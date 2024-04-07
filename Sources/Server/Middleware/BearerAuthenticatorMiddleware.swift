@@ -1,9 +1,9 @@
 import Foundation
 import HTTPTypes
+import JWT
 import OpenAPIRuntime
 import SQLKit
 import Vapor
-import JWT
 
 struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
@@ -28,17 +28,18 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     guard let token = header.bearerAuthorization?.token else {
       throw Abort(.notAcceptable, reason: "No Token")
     }
-    
+
     let payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
 
     guard Date.now < payload.expiration.value else {
       throw Abort(.notAcceptable, reason: "Token expired")
     }
-    
-    guard let userToken = try await UserToken.find(UUID(uuidString: payload.id.value)!, on: app.db) else {
+
+    guard let userToken = try await UserToken.find(UUID(uuidString: payload.id.value)!, on: app.db)
+    else {
       throw Abort(.notAcceptable, reason: "Token not registered")
     }
-    
+
     guard userToken.invalidatedDate == nil else {
       throw Abort(.notAcceptable, reason: "Token invalidated")
     }
