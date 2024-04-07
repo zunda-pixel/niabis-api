@@ -3,6 +3,7 @@ import HTTPTypes
 import OpenAPIRuntime
 import SQLKit
 import Vapor
+import JWT
 
 struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
@@ -19,32 +20,33 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       OpenAPIRuntime.HTTPBody?
     )
   ) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
+    guard !["getToken"].contains(operationID) else {
+      return try await next(request, body, metadata)
+    }
+
     let header: HTTPHeaders = .init(request.headerFields.map { ($0.name.rawName, $0.value) })
     guard let token = header.bearerAuthorization?.token else {
-      throw Abort(.notAcceptable)
+      throw Abort(.notAcceptable, reason: "No Token")
     }
-    let database = app.db as! SQLDatabase
-    let row = try await database.select()
-      .from("user_authentications")
-      .columns("userID", "bearerToken", "timestamp")
-      .where("bearerToken", .equal, token)
-      .first()
+    
+    let payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
 
-    guard let row else {
-      throw Abort(.forbidden)
+    guard Date.now < payload.expiration.value else {
+      throw Abort(.notAcceptable, reason: "Token expired")
+    }
+    
+    guard let userToken = try await UserToken.find(UUID(uuidString: payload.id.value)!, on: app.db) else {
+      throw Abort(.notAcceptable, reason: "Token not registered")
+    }
+    
+    guard userToken.invalidatedDate == nil else {
+      throw Abort(.notAcceptable, reason: "Token invalidated")
     }
 
-    let userAuthentication = UserAuthentication(
-      userID: try row.decode(column: "userID", as: UUID.self),
-      bearerToken: try row.decode(column: "bearerToken", as: String.self),
-      timestamp: try row.decode(column: "timestamp", as: Date.self)
-    )
-
-    let expiredDate = userAuthentication.timestamp.addingTimeInterval(1_000_000)
-
-    guard Date.now < expiredDate else {
-      throw Abort(.forbidden)
-    }
+    // override userID query parameter with the one in the token
+    let url = request.path.map { URL(string: "http://localhost")!.appending(path: $0) }?
+      .appending(queryItems: [.init(name: "userID", value: payload.userId.value)])
+    let request = url.map { HTTPRequest(url: $0) } ?? request
 
     return try await next(request, body, metadata)
   }
