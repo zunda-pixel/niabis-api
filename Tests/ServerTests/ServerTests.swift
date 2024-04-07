@@ -1,13 +1,14 @@
 import FluentPostgresDriver
 import Vapor
 import XCTest
+import JWTKit
 
 @testable import Server
 
 final class ServerTests: XCTestCase {
   let app: Application = {
     let app = Application()
-
+    
     var configuration: SQLPostgresConfiguration = .init(
       hostname: Environment.get("DATABASE_HOST")!,
       username: Environment.get("DATABASE_USERNAME")!,
@@ -24,13 +25,17 @@ final class ServerTests: XCTestCase {
     )
     return app
   }()
-
+  
   deinit {
     app.shutdown()
   }
 
   var handler: some APIProtocol {
-    return APIHandler(app: app)
+    get async throws {
+      let privateKey = try! EdDSA.PrivateKey(curve: .ed25519)
+      await app.jwt.keys.addEdDSA(key: privateKey)
+      return APIHandler(app: app)
+    }
   }
 
   func testGetUserById() async throws {
@@ -81,5 +86,12 @@ final class ServerTests: XCTestCase {
         )!,
       ].map(\.absoluteString)
     )
+  }
+  
+  func testGetToken() async throws {
+    let response = try await handler.getToken(
+      query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
+    )
+    _ = try response.ok.body.json
   }
 }
