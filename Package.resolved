@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server/async-http-client.git",
       "state" : {
-        "revision" : "291438696abdd48d2a83b52465c176efbd94512b",
-        "version" : "1.20.1"
+        "revision" : "fb308ee72f3d4c082a507033f94afa7395963ef3",
+        "version" : "1.21.0"
       }
     },
     {
@@ -66,7 +66,7 @@
     {
       "identity" : "jwt",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt.git",
+      "location" : "https://github.com/vapor/jwt",
       "state" : {
         "revision" : "690a134c7135fad8238526d2e07ea6e1b3599694",
         "version" : "5.0.0-beta.2"
@@ -75,19 +75,10 @@
     {
       "identity" : "jwt-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt-kit",
+      "location" : "https://github.com/vapor/jwt-kit.git",
       "state" : {
         "revision" : "6c04622461084a130e119a5f3b5c8afcfc78114c",
         "version" : "5.0.0-beta.2.1"
-      }
-    },
-    {
-      "identity" : "keychainaccess",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
-      "state" : {
-        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
-        "version" : "4.2.2"
       }
     },
     {
@@ -149,14 +140,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift",
       "state" : {
-        "revision" : "1a7dad006f94749923e764343aaaeadbe74f0352",
-        "version" : "2.6.0"
+        "revision" : "ff883c94d7752179a23161f41f2a74eeb9b47140",
+        "version" : "2.5.1"
       }
     },
     {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-algorithms",
+      "location" : "https://github.com/apple/swift-algorithms.git",
       "state" : {
         "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
         "version" : "1.2.0"
@@ -446,8 +437,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
       "state" : {
-        "revision" : "11cdb29614a5c7f8c5289f3c97b3398c3d89b395",
-        "version" : "4.92.5"
+        "revision" : "8409c3c296e7f8965df14e906dbcd44eb68f54a9",
+        "version" : "4.92.6"
       }
     },
     {
@@ -464,8 +455,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams",
       "state" : {
-        "revision" : "8a835d918245ca22f36663dd3862138805d7f707",
-        "version" : "5.1.0"
+        "revision" : "23b6264b9a822b961f480dfa31a1a0ee9114c052",
+        "version" : "5.1.1"
       }
     }
   ],
