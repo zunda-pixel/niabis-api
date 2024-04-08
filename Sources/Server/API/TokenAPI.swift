@@ -13,7 +13,7 @@ extension APIHandler {
     }
 
     let userToken = UserToken(
-      id: .init(),
+      id: UUID(),
       userId: userID,
       invalidatedDate: nil
     )

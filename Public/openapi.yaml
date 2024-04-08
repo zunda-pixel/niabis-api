@@ -35,6 +35,8 @@ tags:
 paths:
   /token:
     get:
+      security:
+        - basicAuth: []
       tags:
         - Authorization
       summary: Generate token
@@ -145,6 +147,7 @@ paths:
           description: User not found
 
 security:
+  - basicAuth: []
   - bearerAuth: []
 
 components:
@@ -154,6 +157,10 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Credentials or access token for API
+    basicAuth:
+      type: http
+      scheme: basic
+
   schemas:
     LabelContent:
       type: object
