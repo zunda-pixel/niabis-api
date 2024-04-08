@@ -66,7 +66,7 @@
     {
       "identity" : "jwt",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt",
+      "location" : "https://github.com/vapor/jwt.git",
       "state" : {
         "revision" : "690a134c7135fad8238526d2e07ea6e1b3599694",
         "version" : "5.0.0-beta.2"
@@ -75,7 +75,7 @@
     {
       "identity" : "jwt-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt-kit.git",
+      "location" : "https://github.com/vapor/jwt-kit",
       "state" : {
         "revision" : "6c04622461084a130e119a5f3b5c8afcfc78114c",
         "version" : "5.0.0-beta.2.1"
@@ -147,7 +147,7 @@
     {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-algorithms.git",
+      "location" : "https://github.com/apple/swift-algorithms",
       "state" : {
         "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
         "version" : "1.2.0"
