@@ -7,6 +7,7 @@ import Vapor
 
 struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
+  let excludeOperationIDs: [String]
 
   func intercept(
     _ request: HTTPTypes.HTTPRequest,
@@ -20,7 +21,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       OpenAPIRuntime.HTTPBody?
     )
   ) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
-    guard !["getToken"].contains(operationID) else {
+    guard !excludeOperationIDs.contains(operationID) else {
       return try await next(request, body, metadata)
     }
 

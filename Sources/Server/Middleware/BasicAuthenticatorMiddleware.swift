@@ -6,6 +6,8 @@ import Supabase
 import Auth
 
 struct BasicAuthenticatorMiddleware: ServerMiddleware {
+  let operationIDs: [String]
+  
   func intercept(
     _ request: HTTPTypes.HTTPRequest,
     body: OpenAPIRuntime.HTTPBody?,
@@ -18,7 +20,7 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       OpenAPIRuntime.HTTPBody?
     )
   ) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
-    guard ["getToken"].contains(operationID) else {
+    guard operationIDs.contains(operationID) else {
       return try await next(request, body, metadata)
     }
     

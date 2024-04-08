@@ -79,8 +79,8 @@ struct App {
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
         MetricsMiddleware(counterPrefix: "NiaBisServer"),
-        BearerAuthenticatorMiddleware(app: app),
-        BasicAuthenticatorMiddleware(),
+        BearerAuthenticatorMiddleware(app: app, excludeOperationIDs: ["getToken"]),
+        BasicAuthenticatorMiddleware(operationIDs: ["getToken"]),
       ]
     )
 
