@@ -23,6 +23,7 @@ let package = Package(
     .package(url: "https://github.com/swift-server/swift-prometheus", exact: "2.0.0-alpha.2"), // TODO
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.0.1"),
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.2"), // TODO
+    .package(url: "https://github.com/supabase/supabase-swift", from: "2.6.0"),
   ],
   targets: [
     .executableTarget(
@@ -36,7 +37,9 @@ let package = Package(
         .product(name: "Metrics", package: "swift-metrics"),
         .product(name: "Prometheus", package: "swift-prometheus"),
         .product(name: "TripadvisorKit", package: "tripadvisor-swift"),
-        .product(name: "JWT", package: "jwt")
+        .product(name: "JWT", package: "jwt"),
+        .product(name: "Auth", package: "supabase-swift"),
+        .product(name: "Supabase", package: "supabase-swift"),
       ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
