@@ -1,5 +1,7 @@
 import Fluent
 import FluentPostgresDriver
+import JWT
+import JWTKit
 import Metrics
 import OpenAPIVapor
 import Prometheus
@@ -26,6 +28,9 @@ struct App {
     }
     let registry = PrometheusCollectorRegistry()
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
+
+    let privateKey = try EdDSA.PrivateKey(curve: .ed25519)
+    await app.jwt.keys.addEdDSA(key: privateKey)
 
     app.get("metrics") { request in
       var buffer: [UInt8] = []
@@ -74,7 +79,8 @@ struct App {
       middlewares: [
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
         MetricsMiddleware(counterPrefix: "NiaBisServer"),
-        BearerAuthenticatorMiddleware(app: app),
+        BearerAuthenticatorMiddleware(app: app, excludeOperationIDs: ["getToken"]),
+        BasicAuthenticatorMiddleware(operationIDs: ["getToken"]),
       ]
     )
 
