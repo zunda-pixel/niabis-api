@@ -56,7 +56,7 @@ final class ServerTests: XCTestCase {
     let location = try response.ok.body.json
 
     XCTAssertEqual(location.id, 450339)
-    XCTAssertEqual(location.description, "")
+    XCTAssertEqual(location.description, "Indoor Dining<br />Private Events<br />Carryout<br /><br />Chef Joseph Allen<br />Around the corner from The White House<br />")
     XCTAssertEqual(
       location.cuisines,
       [
