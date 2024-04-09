@@ -42,3 +42,6 @@ jobs:
         DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+        SUPABASE_PROJECT_URL: ${{ secrets.SUPABASE_PROJECT_URL }}
+        TRIPADVISOR_API_KEY: ${{ secrets.TRIPADVISOR_API_KEY }}
