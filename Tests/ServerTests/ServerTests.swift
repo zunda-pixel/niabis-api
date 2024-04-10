@@ -97,4 +97,17 @@ final class ServerTests: XCTestCase {
     )
     _ = try response.ok.body.json
   }
+  
+  func testRevokeToken() async throws {
+    let tokenResponse = try await handler.getToken(
+      query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
+    )
+    
+    let tokenId = try tokenResponse.ok.body.json.id
+    
+    let revokeResponse = try await handler.revokeToken (
+      query: .init(tokenId: tokenId)
+    )
+    _ = try revokeResponse.ok
+  }
 }
