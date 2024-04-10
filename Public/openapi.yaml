@@ -1,16 +1,8 @@
 openapi: '3.1.0'
 info:
-  title: Swagger Petstore - OpenAPI 3.1.0
+  title: Niabis API - OpenAPI 3.1.0
   description: |-
-    This is a sample Pet Store Server based on the OpenAPI 3.1 specification.  You can find out more about
-    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
-    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
-    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
-
-    Some useful links:
-    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
-    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-
+    This is a NiaBis API Server based on the OpenAPI 3.1 specification.
   termsOfService: http://swagger.io/terms/
   contact:
     email: zunda.dev@gmail.com
@@ -19,8 +11,8 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: Find out more about NiaBis API
+  url: https://niabis-api.readme.io/
 servers:
   - url: https://api.niabis.com/
     description: Producction deployment.
@@ -29,9 +21,10 @@ servers:
 tags:
   - name: User
     description: Everything about User
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
+  - name: Authorization
+    description: Everything about Authorization
+  - name: Location
+    description: Everything about Location
 paths:
   /token:
     get:
