@@ -56,8 +56,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Token'
+  /revokeToken:
+    delete:
+      security:
+        - basicAuth: []
+      tags:
+        - Authorization
+      summary: Revoke token
+      operationId: revokeToken
+      parameters:
+        - name: tokenId
+          in: query
+          description: Token ID to revoke
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
   /location:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Location
       summary: Find Location
@@ -231,7 +251,7 @@ components:
           description: Email address.
         expireDate:
           type: string
-          format: date-time 
+          format: date-time
           description: Expired date
       required:
         - token
