@@ -15,7 +15,7 @@ extension APIHandler {
     let userToken = UserToken(
       id: UUID(),
       userId: userID,
-      invalidatedDate: nil
+      revokedDate: nil
     )
 
     let payload = UserPayload(
