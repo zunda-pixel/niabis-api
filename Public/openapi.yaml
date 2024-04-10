@@ -248,13 +248,18 @@ components:
       type: object
       description: A value with the Token contents.
       properties:
+        id:
+          type: string
+          description: Token Id.
+          format: uuid
         token:
           type: string
           description: Email address.
         expireDate:
           type: string
           format: date-time
-          description: Expired date
+          description: Expired date.
       required:
+        - id
         - token
         - expireDate
