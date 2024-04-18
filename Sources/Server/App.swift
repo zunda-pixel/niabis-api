@@ -17,19 +17,15 @@ struct App {
     defer { app.shutdown() }
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
-    app.get(".well-known", "apple-app-site-association") { _ in
-      return AppSiteAssociation(
-        webCredentials: .init(
-          apps: [
-            "PU5HXZ4FZ2.com.zunda.niabis"
-          ]
-        )
-      )
-    }
+
     let registry = PrometheusCollectorRegistry()
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
 
-    let privateKey = try EdDSA.PrivateKey(curve: .ed25519)
+    let privateKey = try EdDSA.PrivateKey(
+      x: Environment.get("EdDSA_PRIVATE_KEY")!,
+      d: Environment.get("EdDSA_PUBLIC_KEY")!,
+      curve: .ed25519
+    )
     await app.jwt.keys.addEdDSA(key: privateKey)
 
     app.get("metrics") { request in
