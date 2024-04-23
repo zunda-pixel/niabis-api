@@ -21,7 +21,7 @@
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/attaswift/BigInt.git",
+      "location" : "https://github.com/attaswift/BigInt",
       "state" : {
         "revision" : "0ed110f7555c34ff468e72e1686e59721f2b0da6",
         "version" : "5.3.0"
@@ -39,7 +39,7 @@
     {
       "identity" : "fluent",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/fluent",
+      "location" : "https://github.com/vapor/fluent.git",
       "state" : {
         "revision" : "a586a5d4164f23a0ee4e02e1f467b9bbef0c9f1c",
         "version" : "4.9.0"
@@ -48,7 +48,7 @@
     {
       "identity" : "fluent-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/fluent-kit.git",
+      "location" : "https://github.com/vapor/fluent-kit",
       "state" : {
         "revision" : "5f0938a3f5f1a751ff7a411117bfce4efe713526",
         "version" : "1.47.2"
@@ -66,7 +66,7 @@
     {
       "identity" : "jwt",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt.git",
+      "location" : "https://github.com/vapor/jwt",
       "state" : {
         "revision" : "690a134c7135fad8238526d2e07ea6e1b3599694",
         "version" : "5.0.0-beta.2"
@@ -79,6 +79,15 @@
       "state" : {
         "revision" : "6c04622461084a130e119a5f3b5c8afcfc78114c",
         "version" : "5.0.0-beta.2.1"
+      }
+    },
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
+        "version" : "4.2.2"
       }
     },
     {
@@ -165,7 +174,7 @@
     {
       "identity" : "swift-asn1",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-asn1.git",
+      "location" : "https://github.com/apple/swift-asn1",
       "state" : {
         "revision" : "c7e239b5c1492ffc3ebd7fbcc7a92548ce4e78f0",
         "version" : "1.1.0"
@@ -174,7 +183,7 @@
     {
       "identity" : "swift-async-algorithms",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-async-algorithms.git",
+      "location" : "https://github.com/apple/swift-async-algorithms",
       "state" : {
         "revision" : "da4e36f86544cdf733a40d59b3a2267e3a7bbf36",
         "version" : "1.0.0"
@@ -192,7 +201,7 @@
     {
       "identity" : "swift-certificates",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-certificates.git",
+      "location" : "https://github.com/apple/swift-certificates",
       "state" : {
         "revision" : "bc566f88842b3b8001717326d935c2d113af5741",
         "version" : "1.2.0"
@@ -228,7 +237,7 @@
     {
       "identity" : "swift-crypto",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-crypto.git",
+      "location" : "https://github.com/apple/swift-crypto",
       "state" : {
         "revision" : "f0525da24dc3c6cbb2b6b338b65042bc91cbc4bb",
         "version" : "3.3.0"
@@ -282,7 +291,7 @@
     {
       "identity" : "swift-metrics",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-metrics",
+      "location" : "https://github.com/apple/swift-metrics.git",
       "state" : {
         "revision" : "971ba26378ab69c43737ee7ba967a896cb74c0d1",
         "version" : "2.4.1"
@@ -390,7 +399,7 @@
     {
       "identity" : "swift-service-lifecycle",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server/swift-service-lifecycle.git",
+      "location" : "https://github.com/swift-server/swift-service-lifecycle",
       "state" : {
         "revision" : "d7fe0e731499a8dcce53bf4cbbc812c8e565d3a7",
         "version" : "2.4.1"
@@ -444,7 +453,7 @@
     {
       "identity" : "websocket-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/websocket-kit.git",
+      "location" : "https://github.com/vapor/websocket-kit",
       "state" : {
         "revision" : "4232d34efa49f633ba61afde365d3896fc7f8740",
         "version" : "2.15.0"
