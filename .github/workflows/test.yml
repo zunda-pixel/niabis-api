@@ -1,47 +1,18 @@
-name: Lint & Test
+name: Test
 
-on:
-  pull_request:
-    branches: [ "main", "develop" ]
+on: pull_request
 
 jobs:
-  lint:
-    name: Lint Swift ${{ matrix.swift }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        swift: ["5.9.2"]
+  build:
+    runs-on: ubuntu-latest
     steps:
-    - name: Install swiftly
-      run: curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash -s -- --disable-confirmation
-    - name: Install Swift
-      run: swiftly install ${{ matrix.swift }}
-    - uses: actions/checkout@v4
-    - name: Lint
-      run: swift package plugin lint-source-code
-  test:
-    name: Test Swift ${{ matrix.swift }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        swift: ["5.9.2"]
-    steps:
-    - name: Install swiftly
-      run: curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash -s -- --disable-confirmation
-    - name: Install Swift
-      run: swiftly install ${{ matrix.swift }}
-    - uses: actions/checkout@v4
-    - name: Build
-      run: swift build -v
-    - name: Test Swift
-      run: swift test -v
-      env:
-        DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-        SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
-        SUPABASE_PROJECT_URL: ${{ secrets.SUPABASE_PROJECT_URL }}
-        TRIPADVISOR_API_KEY: ${{ secrets.TRIPADVISOR_API_KEY }}
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: docker compose run swift-test
+        env:
+          TRIPADVISOR_API_KEY: ${{ secrets.TRIPADVISOR_API_KEY }}
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down
