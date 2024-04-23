@@ -66,7 +66,7 @@
     {
       "identity" : "jwt",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt.git",
+      "location" : "https://github.com/vapor/jwt",
       "state" : {
         "revision" : "690a134c7135fad8238526d2e07ea6e1b3599694",
         "version" : "5.0.0-beta.2"
@@ -75,10 +75,19 @@
     {
       "identity" : "jwt-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/jwt-kit",
+      "location" : "https://github.com/vapor/jwt-kit.git",
       "state" : {
         "revision" : "6c04622461084a130e119a5f3b5c8afcfc78114c",
         "version" : "5.0.0-beta.2.1"
+      }
+    },
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
+        "version" : "4.2.2"
       }
     },
     {
@@ -140,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift",
       "state" : {
-        "revision" : "ff883c94d7752179a23161f41f2a74eeb9b47140",
-        "version" : "2.5.1"
+        "revision" : "c29ac728f0ac355f2adaf3bd1eec15e59b75dc51",
+        "version" : "2.8.0"
       }
     },
     {

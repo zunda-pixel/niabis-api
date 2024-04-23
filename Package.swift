@@ -23,7 +23,7 @@ let package = Package(
     .package(url: "https://github.com/swift-server/swift-prometheus", exact: "2.0.0-alpha.2"), // TODO
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.0.1"),
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.2"), // TODO
-    .package(url: "https://github.com/supabase/supabase-swift", exact: "2.5.1"),
+    .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
   ],
   targets: [
     .executableTarget(
