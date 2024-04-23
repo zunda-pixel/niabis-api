@@ -13,7 +13,7 @@ extension APIHandler {
     }
 
     let tokenId = UUID()
-    
+
     let userToken = UserToken(
       id: tokenId,
       userId: userID,
@@ -43,16 +43,18 @@ extension APIHandler {
     )
   }
 
-  func revokeToken(_ input: Operations.revokeToken.Input) async throws -> Operations.revokeToken.Output {
+  func revokeToken(
+    _ input: Operations.revokeToken.Input
+  ) async throws -> Operations.revokeToken.Output {
     guard let tokenId = UUID(uuidString: input.query.tokenId) else {
       throw Abort(.badRequest, reason: "Invalid UUID")
     }
-    
+
     let tokenCount = try await UserToken.query(on: app.db)
       .filter(\UserToken.$id, .equal, tokenId)
       .limit(1)
       .count()
-    
+
     guard tokenCount > 0 else {
       return .notFound(.init())
     }
