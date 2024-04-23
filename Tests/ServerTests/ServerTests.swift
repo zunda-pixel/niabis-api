@@ -7,14 +7,15 @@ import XCTest
 
 final class ServerTests: XCTestCase {
   let app: Application = {
-    let app = Application()
+    var env = try! Environment.detect()
+    let app = Application(env)
 
     var configuration: SQLPostgresConfiguration = .init(
-      hostname: Environment.get("DATABASE_HOST")!,
-      username: Environment.get("DATABASE_USERNAME")!,
-      password: Environment.get("DATABASE_PASSWORD")!,
-      database: Environment.get("DATABASE_NAME")!,
-      tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
+      hostname: "db",
+      username: "postgres",
+      password: "postgres",
+      database: "postgres",
+      tls: .disable
     )
 
     configuration.searchPath = ["public", "auth"]
@@ -34,7 +35,10 @@ final class ServerTests: XCTestCase {
     get async throws {
       let privateKey = try! EdDSA.PrivateKey(curve: .ed25519)
       await app.jwt.keys.addEdDSA(key: privateKey)
-      return APIHandler(app: app)
+      return APIHandler(
+        app: app,
+        tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!
+      )
     }
   }
 
@@ -42,7 +46,7 @@ final class ServerTests: XCTestCase {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
     let json = try response.ok.body.json
-    XCTAssertEqual(json, .init(id: userID.uuidString, email: "niabis.official+ios@gmail.com"))
+    XCTAssertEqual(json, .init(id: userID.uuidString, email: "test@niabis.com"))
   }
 
   func testGetLocation() async throws {
@@ -58,7 +62,7 @@ final class ServerTests: XCTestCase {
     XCTAssertEqual(location.id, 450339)
     XCTAssertEqual(
       location.description,
-      "Indoor Dining<br />Private Events<br />Carryout<br /><br />Chef Joseph Allen<br />Around the corner from The White House<br />"
+      "Indoor DiningPrivate EventsCarryoutChef Joseph AllenAround the corner from The White House"
     )
     XCTAssertEqual(
       location.cuisines,
