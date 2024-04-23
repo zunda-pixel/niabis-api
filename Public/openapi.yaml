@@ -33,7 +33,7 @@ paths:
       tags:
         - Authorization
       summary: Generate token
-      operationId: getToken
+      operationId: generateToken
       parameters:
         - name: userID
           in: query
