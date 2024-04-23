@@ -1,0 +1,17 @@
+name: Lint
+
+on: pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install swiftly
+        run: curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash -s -- --disable-confirmation
+      - name: Install Swift
+        run: swiftly install latest
+      - name: Show Swift version
+        run: swift --version
+      - uses: actions/checkout@v4
+      - name: Lint
+        run: swift package plugin lint-source-code

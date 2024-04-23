@@ -41,8 +41,8 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       throw Abort(.notAcceptable, reason: "Token not registered")
     }
 
-    guard userToken.invalidatedDate == nil else {
-      throw Abort(.notAcceptable, reason: "Token invalidated")
+    guard userToken.revokedDate == nil else {
+      throw Abort(.notAcceptable, reason: "Token revoked")
     }
 
     // override userID query parameter with the one in the token

@@ -10,8 +10,8 @@ final class UserToken: Model {
   @Field(key: "userId")
   var userId: UUID
 
-  @Field(key: "invalidatedDate")
-  var invalidatedDate: Date?
+  @Field(key: "revokedDate")
+  var revokedDate: Date?
 
   init() {
     id = UUID()
@@ -20,10 +20,10 @@ final class UserToken: Model {
   init(
     id: UUID,
     userId: UUID,
-    invalidatedDate: Date?
+    revokedDate: Date?
   ) {
     self.id = id
     self.userId = userId
-    self.invalidatedDate = invalidatedDate
+    self.revokedDate = revokedDate
   }
 }
