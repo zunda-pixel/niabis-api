@@ -11,10 +11,10 @@ final class ServerTests: XCTestCase {
     let app = Application(env)
 
     var configuration: SQLPostgresConfiguration = .init(
-      hostname: "db",
-      username: "postgres",
-      password: "postgres",
-      database: "postgres",
+      hostname: Environment.get("DATABASE_HOST")!,
+      username: Environment.get("DATABASE_USERNAME")!,
+      password: Environment.get("DATABASE_PASSWORD")!,
+      database: Environment.get("DATABASE_NAME")!,
       tls: .disable
     )
 
