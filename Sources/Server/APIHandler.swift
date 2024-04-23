@@ -5,8 +5,11 @@ actor APIHandler: APIProtocol {
   let tripadvisorApiKey: String
   let tripadvisorRefererURL = URL(string: "https://api.niabis.com")!
 
-  init(app: Application) {
+  init(
+    app: Application,
+    tripadvisorApiKey: String
+  ) {
     self.app = app
-    self.tripadvisorApiKey = Environment.get("TRIPADVISOR_API_KEY")!
+    self.tripadvisorApiKey = tripadvisorApiKey
   }
 }

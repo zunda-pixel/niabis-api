@@ -68,7 +68,10 @@ struct App {
 
     let transport = VaporTransport(routesBuilder: app)
 
-    let handler = APIHandler(app: app)
+    let handler = APIHandler(
+      app: app,
+      tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!
+    )
 
     try handler.registerHandlers(
       on: transport,
