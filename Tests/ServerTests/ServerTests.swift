@@ -50,7 +50,7 @@ final class ServerTests: XCTestCase {
   }
 
   func testGetLocation() async throws {
-    let response = try await handler.getLocation(
+    let response = try await handler.getLocationDetail(
       query: .init(
         locationName: "Old Ebbitt Grill",
         language: .en

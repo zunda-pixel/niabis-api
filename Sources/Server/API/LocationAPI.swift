@@ -2,8 +2,8 @@ import TripadvisorKit
 import Vapor
 
 extension APIHandler {
-  func getLocation(_ input: Operations.getLocation.Input) async throws
-    -> Operations.getLocation.Output
+  func getLocationDetail(_ input: Operations.getLocationDetail.Input) async throws
+    -> Operations.getLocationDetail.Output
   {
     let language: Language = .init(rawValue: input.query.language.rawValue)!
 
