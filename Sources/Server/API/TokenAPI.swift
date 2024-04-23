@@ -12,14 +12,16 @@ extension APIHandler {
       throw Abort(.notFound, reason: "User not found")
     }
 
+    let tokenId = UUID()
+
     let userToken = UserToken(
-      id: UUID(),
+      id: tokenId,
       userId: userID,
-      invalidatedDate: nil
+      revokedDate: nil
     )
 
     let payload = UserPayload(
-      id: .init(value: userToken.id!.uuidString),
+      id: .init(value: tokenId.uuidString),
       userId: .init(value: input.query.userID),
       expiration: .init(value: .distantFuture)
     )
@@ -32,11 +34,39 @@ extension APIHandler {
       .init(
         body: .json(
           .init(
+            id: tokenId.uuidString,
             token: token,
             expireDate: payload.expiration.value
           )
         )
       )
     )
+  }
+
+  func revokeToken(
+    _ input: Operations.revokeToken.Input
+  ) async throws -> Operations.revokeToken.Output {
+    guard let tokenId = UUID(uuidString: input.query.tokenId) else {
+      throw Abort(.badRequest, reason: "Invalid UUID")
+    }
+
+    let tokenCount = try await UserToken.query(on: app.db)
+      .filter(\UserToken.$id, .equal, tokenId)
+      .limit(1)
+      .count()
+
+    guard tokenCount > 0 else {
+      return .notFound(.init())
+    }
+
+    var query = UserToken.query(on: app.db)
+
+    query = query.set(\.$revokedDate, to: Date())
+
+    try await query
+      .filter(\UserToken.$id, .equal, tokenId)
+      .update()
+
+    return .ok(.init())
   }
 }
