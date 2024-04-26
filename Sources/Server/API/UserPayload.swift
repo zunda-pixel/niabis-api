@@ -5,7 +5,7 @@ struct UserPayload: JWTPayload {
   var userId: SubjectClaim
   var expiration: ExpirationClaim
 
-  func verify(using key: JWTAlgorithm) throws {
+  func verify(using algorithm: some JWTKit.JWTAlgorithm) async throws {
     try self.expiration.verifyNotExpired()
   }
 }
