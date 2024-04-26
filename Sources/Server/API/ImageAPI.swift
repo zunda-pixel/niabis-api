@@ -11,23 +11,23 @@ extension APIHandler {
       accountId: cloudflareAccountId
     )
 
+    guard case .image__ast_(let body) = input.body else {
+      throw Abort(.badRequest, reason: "Requires Image data or Image url")
+    }
+    let imageData = try await Data(collecting: body, upTo: .max)
     let uploadedImage: Image
-
-    if case .image__ast_(let body) = input.body {
-      let imageData = try await Data(collecting: body, upTo: .max)
+    do {
       uploadedImage = try await clinet.upload(imageData: imageData)
-    } else if let urlString = input.query.url {
-      if let url = URL(string: urlString) {
-        uploadedImage = try await clinet.upload(imageURL: url)
-      } else {
-        throw Abort(.badRequest)
-      }
-    } else {
-      throw Abort(.badRequest)
+    } catch RequestError.invalidContentType {
+      throw Abort(
+        .internalServerError,
+        reason:
+          "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+      )
     }
 
     guard let imageURL = uploadedImage.variants.first else {
-      throw Abort(.badRequest)
+      throw Abort(.internalServerError, reason: "Not found Image")
     }
 
     return .ok(.init(body: .json(.init(url: imageURL.absoluteString))))

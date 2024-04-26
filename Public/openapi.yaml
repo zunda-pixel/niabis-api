@@ -34,15 +34,8 @@ paths:
         - Image
       summary: Upload Image
       operationId: uploadImage
-      parameters:
-        - name: url
-          in: query
-          description: URL of Image
-          schema:
-            type: string
-            format: uri
       requestBody:
-        required: false
+        required: true
         description: image to upload
         content:
           image/*:

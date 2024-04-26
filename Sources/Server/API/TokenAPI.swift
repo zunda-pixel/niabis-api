@@ -28,9 +28,19 @@ extension APIHandler {
       expiration: .init(value: .distantFuture)
     )
 
-    try await userToken.create(on: app.db)
+    do {
+      try await userToken.create(on: app.db)
+    } catch {
+      throw Abort(.internalServerError, reason: "Failed to save token information")
+    }
 
-    let token = try await app.jwt.keys.sign(payload)
+    let token: String
+
+    do {
+      token = try await app.jwt.keys.sign(payload)
+    } catch {
+      throw Abort(.internalServerError, reason: "Failed to generate token")
+    }
 
     return .ok(
       .init(

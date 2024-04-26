@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/cloudflare-swift",
       "state" : {
-        "revision" : "4008df8288b067476c9f4168ae251458576a1a11",
-        "version" : "0.0.3"
+        "revision" : "5a8f6877004d6813cadd9a97e582b4f016f83994",
+        "version" : "0.0.4"
       }
     },
     {
