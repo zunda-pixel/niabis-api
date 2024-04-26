@@ -15,19 +15,23 @@ extension APIHandler {
 
     if case .image__ast_(let body) = input.body {
       let imageData = try await Data(collecting: body, upTo: .max)
-      uploadedImage = try await clinet.upload(imageData: imageData)
+      do {
+        uploadedImage = try await clinet.upload(imageData: imageData)
+      } catch RequestError.invalidContentType {
+        throw Abort(.internalServerError, reason: "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type")
+      }
     } else if let urlString = input.query.url {
       if let url = URL(string: urlString) {
         uploadedImage = try await clinet.upload(imageURL: url)
       } else {
-        throw Abort(.badRequest)
+        throw Abort(.badRequest, reason: "Invalid URL format")
       }
     } else {
-      throw Abort(.badRequest)
+      throw Abort(.badRequest, reason: "Requires Image data or Image url")
     }
 
     guard let imageURL = uploadedImage.variants.first else {
-      throw Abort(.badRequest)
+      throw Abort(.internalServerError, reason: "Not found Image")
     }
 
     return .ok(.init(body: .json(.init(url: imageURL.absoluteString))))
