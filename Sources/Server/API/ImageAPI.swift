@@ -20,12 +20,6 @@ extension APIHandler {
       } catch RequestError.invalidContentType {
         throw Abort(.internalServerError, reason: "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type")
       }
-    } else if let urlString = input.query.url {
-      if let url = URL(string: urlString) {
-        uploadedImage = try await clinet.upload(imageURL: url)
-      } else {
-        throw Abort(.badRequest, reason: "Invalid URL format")
-      }
     } else {
       throw Abort(.badRequest, reason: "Requires Image data or Image url")
     }
