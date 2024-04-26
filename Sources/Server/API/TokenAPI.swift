@@ -3,7 +3,9 @@ import JWTKit
 import Vapor
 
 extension APIHandler {
-  func generateToken(_ input: Operations.generateToken.Input) async throws -> Operations.generateToken.Output {
+  func generateToken(
+    _ input: Operations.generateToken.Input
+  ) async throws -> Operations.generateToken.Output {
     guard let userID = UUID(uuidString: input.query.userID) else {
       throw Abort(.badRequest, reason: "Invalid UUID")
     }
