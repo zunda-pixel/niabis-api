@@ -51,6 +51,9 @@ let package = Package(
       name: "ServerTests",
       dependencies: [
         .target(name: "Server")
+      ],
+      resources: [
+        .process("Resources"),
       ]
     ),
   ]

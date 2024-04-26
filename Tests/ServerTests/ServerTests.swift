@@ -37,11 +37,29 @@ final class ServerTests: XCTestCase {
       await app.jwt.keys.addEdDSA(key: privateKey)
       return APIHandler(
         app: app,
-        tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!
+        tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!,
+        cloudflareApiToken: Environment.get("CLOUDFLARE_API_TOKEN")!,
+        cloudflareAccountId: Environment.get("CLOUDFLARE_ACCOUNT_ID")!
       )
     }
   }
-
+  
+  func testUploadImageWithData() async throws {
+    let filePath = Bundle.module.url(forResource: "Swift_logo", withExtension: "svg")!
+    let imageData = try Data(contentsOf: filePath)
+    let response = try await handler.uploadImage(.init(body: .image__ast_(.init(imageData))))
+    let _ = try response.ok.body.json.url
+  }
+  
+  func testUploadImageWithURL() async throws {
+    let cloudflareLogoURL: URL = URL(
+      string:
+        "https://cf-assets.www.cloudflare.com/slt3lc6tev37/7bIgGp4hk4SFO0o3SBbOKJ/b48185dcf20c579960afad879b25ea11/CF_logo_stacked_blktype.jpg"
+    )!
+    let response = try await handler.uploadImage(.init(query: .init(url: cloudflareLogoURL.absoluteString)))
+    let _ = try response.ok.body.json.url
+  }
+  
   func testGetUserById() async throws {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
