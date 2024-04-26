@@ -1,11 +1,14 @@
 import TripadvisorKit
 import Vapor
+import ImagesClient
 
 extension APIHandler {
-  func getLocationDetail(_ input: Operations.getLocationDetail.Input) async throws
-    -> Operations.getLocationDetail.Output
-  {
-    let language: Language = .init(rawValue: input.query.language.rawValue)!
+  func getLocationDetail(
+    _ input: Operations.getLocationDetail.Input
+  ) async throws -> Operations.getLocationDetail.Output {
+    guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
+      throw Abort(.badRequest, reason: "Inavlid Language")
+    }
 
     guard
       let location = try await searchLocation(
@@ -21,17 +24,23 @@ extension APIHandler {
       language: language
     )
 
-    let photosURL = try await locationPhotoURLs(
+    let tripadvisorPhotoURLs = try await locationPhotoURLs(
       locationId: location.id,
       language: language
     )
+    
+    let client = ImagesClient(
+      apiToken: cloudflareApiToken,
+      accountId: cloudflareAccountId
+    )
+    let photoURLs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
 
     return .ok(
       .init(
         body: .json(
           .init(
             location: locationDetail,
-            photoURLs: photosURL
+            photoURLs: photoURLs
           )
         )
       )
@@ -109,5 +118,23 @@ extension Client {
     let uri = URI(string: request.url.absoluteString)
     let heaers: [(String, String)] = request.headers.map { ($0.name.rawName, $0.value) }
     return try await self.get(uri, headers: .init(heaers))
+  }
+}
+
+extension ImagesClient {
+  func upload(imageURLs: [URL]) async throws -> [URL] {
+    try await withThrowingTaskGroup(of: URL.self) { group in
+      for imageURL in imageURLs {
+        group.addTask {
+          return try await self.upload(imageURL: imageURL).variants.first!
+        }
+      }
+      
+      var imageURLs: [URL] = []
+      for try await imageURL in group {
+        imageURLs.append(imageURL)
+      }
+      return imageURLs
+    }
   }
 }
