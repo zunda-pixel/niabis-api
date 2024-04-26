@@ -70,7 +70,9 @@ struct App {
 
     let handler = APIHandler(
       app: app,
-      tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!
+      tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!,
+      cloudflareApiToken: Environment.get("CLOUDFLARE_API_TOKEN")!,
+      cloudflareAccountId: Environment.get("CLOUDFLARE_ACCOUNT_ID")!
     )
 
     try handler.registerHandlers(
