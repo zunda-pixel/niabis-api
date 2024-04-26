@@ -1,6 +1,6 @@
+import ImagesClient
 import TripadvisorKit
 import Vapor
-import ImagesClient
 
 extension APIHandler {
   func getLocationDetail(
@@ -28,7 +28,7 @@ extension APIHandler {
       locationId: location.id,
       language: language
     )
-    
+
     let client = ImagesClient(
       apiToken: cloudflareApiToken,
       accountId: cloudflareAccountId
@@ -129,7 +129,7 @@ extension ImagesClient {
           return try await self.upload(imageURL: imageURL).variants.first!
         }
       }
-      
+
       var imageURLs: [URL] = []
       for try await imageURL in group {
         imageURLs.append(imageURL)

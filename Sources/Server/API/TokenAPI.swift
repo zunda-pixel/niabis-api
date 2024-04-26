@@ -35,7 +35,7 @@ extension APIHandler {
     }
 
     let token: String
-    
+
     do {
       token = try await app.jwt.keys.sign(payload)
     } catch {

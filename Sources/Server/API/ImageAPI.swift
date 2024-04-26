@@ -19,9 +19,13 @@ extension APIHandler {
     do {
       uploadedImage = try await clinet.upload(imageData: imageData)
     } catch RequestError.invalidContentType {
-      throw Abort(.internalServerError, reason: "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type")
+      throw Abort(
+        .internalServerError,
+        reason:
+          "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+      )
     }
-    
+
     guard let imageURL = uploadedImage.variants.first else {
       throw Abort(.internalServerError, reason: "Not found Image")
     }
