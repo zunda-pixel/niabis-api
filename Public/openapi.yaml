@@ -26,6 +26,36 @@ tags:
   - name: Location
     description: Everything about Location
 paths:
+  /image:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Image
+      summary: Upload Image
+      operationId: uploadImage
+      parameters:
+        - name: url
+          in: query
+          description: URL of Image
+          schema:
+            type: string
+            format: uri
+      requestBody:
+        required: false
+        description: image to upload
+        content:
+          image/*:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadImage'
   /token:
     get:
       security:
@@ -33,7 +63,7 @@ paths:
       tags:
         - Authorization
       summary: Generate token
-      operationId: getToken
+      operationId: generateToken
       parameters:
         - name: userID
           in: query
@@ -69,7 +99,7 @@ paths:
           description: successful operation
         '404':
           description: Token not found
-  /location:
+  /locationDetail:
     get:
       security:
         - bearerAuth: []
@@ -77,7 +107,7 @@ paths:
         - Location
       summary: Find Location
       description: Returns a single Location
-      operationId: getLocation
+      operationId: getLocationDetail
       parameters:
         - name: locationName
           in: query
@@ -256,3 +286,13 @@ components:
         - id
         - token
         - expireDate
+    UploadImage:
+      type: object
+      description: A value with the Image contents.
+      properties:
+        url:
+          description: Image URL.
+          type: string
+          format: uri
+      required:
+        - url

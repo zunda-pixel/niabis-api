@@ -24,6 +24,7 @@ let package = Package(
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.0.1"),
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.2"), // TODO
     .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
+    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.0.2"),
   ],
   targets: [
     .executableTarget(
@@ -40,6 +41,7 @@ let package = Package(
         .product(name: "JWT", package: "jwt"),
         .product(name: "Auth", package: "supabase-swift"),
         .product(name: "Supabase", package: "supabase-swift"),
+        .product(name: "ImagesClient", package: "cloudflare-swift"),
       ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
@@ -49,6 +51,9 @@ let package = Package(
       name: "ServerTests",
       dependencies: [
         .target(name: "Server")
+      ],
+      resources: [
+        .process("Resources"),
       ]
     ),
   ]
