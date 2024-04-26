@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "cloudflare-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zunda-pixel/cloudflare-swift",
+      "state" : {
+        "revision" : "b411a1acf7582cb30b0b5cc8479bef0ceb4238fd",
+        "version" : "0.0.2"
+      }
+    },
+    {
       "identity" : "console-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/console-kit.git",
@@ -97,6 +106,15 @@
       "state" : {
         "revision" : "12ee56f25bd3fc4c2d09c2aa16e69de61dc786e8",
         "version" : "4.6.0"
+      }
+    },
+    {
+      "identity" : "multipartform",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/davbeck/MultipartForm",
+      "state" : {
+        "revision" : "c91979ea956a360bf84f0cc480afbcc7c946c753",
+        "version" : "0.1.0"
       }
     },
     {
