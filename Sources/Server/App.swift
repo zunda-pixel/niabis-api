@@ -40,7 +40,8 @@ struct App {
       username: Environment.get("DATABASE_USERNAME")!,
       password: Environment.get("DATABASE_PASSWORD")!,
       database: Environment.get("DATABASE_NAME")!,
-      tls: app.environment == .production ? .require(try! .init(configuration: .makePreSharedKeyConfiguration())) : .disable
+      tls: app.environment == .production
+        ? .require(try! .init(configuration: .makePreSharedKeyConfiguration())) : .disable
     )
 
     configuration.searchPath = ["public", "auth"]
