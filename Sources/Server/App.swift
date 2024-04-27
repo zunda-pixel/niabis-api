@@ -22,8 +22,8 @@ struct App {
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
 
     let privateKey = try EdDSA.PrivateKey(
-      x: Environment.get("EdDSA_PRIVATE_KEY")!,
-      d: Environment.get("EdDSA_PUBLIC_KEY")!,
+      x: Environment.get("EdDSA_PUBLIC_KEY")!,
+      d: Environment.get("EdDSA_PRIVATE_KEY")!,
       curve: .ed25519
     )
     await app.jwt.keys.addEdDSA(key: privateKey)
@@ -40,7 +40,7 @@ struct App {
       username: Environment.get("DATABASE_USERNAME")!,
       password: Environment.get("DATABASE_PASSWORD")!,
       database: Environment.get("DATABASE_NAME")!,
-      tls: .require(try! .init(configuration: .makePreSharedKeyConfiguration()))
+      tls: app.environment == .production ? .require(try! .init(configuration: .makePreSharedKeyConfiguration())) : .disable
     )
 
     configuration.searchPath = ["public", "auth"]
@@ -49,15 +49,6 @@ struct App {
       .postgres(configuration: configuration),
       as: .psql
     )
-
-    switch app.environment {
-    case .development:
-      app.passwords.use(.plaintext)
-    case .production:
-      app.passwords.use(.bcrypt)
-    default:
-      fatalError()
-    }
 
     let fileMiddleware = FileMiddleware(
       publicDirectory: app.directory.publicDirectory

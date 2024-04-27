@@ -8,9 +8,4 @@ struct UserPayload: JWTPayload {
   func verify(using algorithm: some JWTKit.JWTAlgorithm) async throws {
     try self.expiration.verifyNotExpired()
   }
-
-  // TODO remain for Linux(Heroku Publish)
-  func verify(using key: JWTAlgorithm) throws {
-    try self.expiration.verifyNotExpired()
-  }
 }

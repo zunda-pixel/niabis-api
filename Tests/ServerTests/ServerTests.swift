@@ -33,7 +33,11 @@ final class ServerTests: XCTestCase {
 
   var handler: some APIProtocol {
     get async throws {
-      let privateKey = try! EdDSA.PrivateKey(curve: .ed25519)
+      let privateKey = try EdDSA.PrivateKey(
+        x: "UlSOo+Q5hOtiSQjSc7HnOaMv5FiXhKG5HMaliNcIN7o=",
+        d: "T8s3Xh9Aulyq0UqIkggCgDyyXQKzPgIWH0w4Cb1O3Yg=123",
+        curve: .ed25519
+      )
       await app.jwt.keys.addEdDSA(key: privateKey)
       return APIHandler(
         app: app,
