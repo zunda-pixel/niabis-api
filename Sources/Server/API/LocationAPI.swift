@@ -7,7 +7,7 @@ extension APIHandler {
     _ input: Operations.getLocationDetail.Input
   ) async throws -> Operations.getLocationDetail.Output {
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
-      throw Abort(.badRequest, reason: "Inavlid Language")
+      return .badRequest(.init(body: .json(.init(message: "Inavlid Language"))))
     }
 
     guard

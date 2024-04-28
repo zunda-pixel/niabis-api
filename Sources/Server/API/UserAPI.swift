@@ -5,8 +5,9 @@ extension APIHandler {
     -> Operations.getUserById.Output
   {
     guard let userID = UUID(uuidString: input.query.userID) else {
-      throw Abort(.badRequest, reason: "Invalid UUID")
+      return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
+
     guard let user = try await User.find(userID, on: app.db) else {
       return .notFound(.init())
     }
@@ -18,10 +19,10 @@ extension APIHandler {
     -> Operations.updateUserByID.Output
   {
     guard let userID = UUID(uuidString: input.query.userID) else {
-      throw Abort(.badRequest, reason: "Invalid UUID")
+      return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
     guard case .json(let user) = input.body else {
-      throw Abort(.badRequest, reason: "Invalid User body")
+      return .badRequest(.init(body: .json(.init(message: "Requires Users Body"))))
     }
 
     let userCount = try await User.query(on: app.db)
