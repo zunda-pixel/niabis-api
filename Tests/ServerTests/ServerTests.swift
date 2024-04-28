@@ -52,7 +52,7 @@ final class ServerTests: XCTestCase {
     let filePath = Bundle.module.url(forResource: "Swift_logo", withExtension: "svg")!
     let imageData = try Data(contentsOf: filePath)
     let response = try await handler.uploadImage(.init(body: .image__ast_(.init(imageData))))
-    let _ = try response.ok.body.json.url
+    _ = try response.ok.body.json.id
   }
 
   func testGetUserById() async throws {
@@ -86,8 +86,7 @@ final class ServerTests: XCTestCase {
         .init(name: "soups", localizedName: "Soups"),
       ]
     )
-    XCTAssertTrue(location.photoURLs.allSatisfy { $0.starts(with: "https://imagedelivery.net/") })
-    XCTAssertEqual(location.photoURLs.count, 5)
+    XCTAssertEqual(location.photoIDs.compactMap { UUID(uuidString: $0) }.count, 5)
   }
 
   func testGetToken() async throws {

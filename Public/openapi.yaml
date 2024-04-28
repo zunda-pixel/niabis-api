@@ -227,17 +227,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LabelContent'
-        photoURLs:
+        photoIDs:
           type: array
           items:
             type: string
-            format: uri
-            description: Photo URL
+            format: uuid
+            description: Photo ID
       required:
         - id
         - description
         - cuisines
-        - photoURLs
+        - photoIDs
         
     User:
       type: object
@@ -283,9 +283,9 @@ components:
       type: object
       description: A value with the Image contents.
       properties:
-        url:
-          description: Image URL.
+        id:
+          description: Image Id.
           type: string
-          format: uri
+          format: uuid
       required:
-        - url
+        - id
