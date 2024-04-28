@@ -31,7 +31,8 @@ extension APIHandler {
     do {
       try await userToken.create(on: app.db)
     } catch {
-      return .internalServerError(.init(body: .json(.init(message: "Failed to save token information"))))
+      return .internalServerError(
+        .init(body: .json(.init(message: "Failed to save token information"))))
     }
 
     let token: String

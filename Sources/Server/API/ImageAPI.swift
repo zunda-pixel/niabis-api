@@ -20,8 +20,13 @@ extension APIHandler {
     do {
       uploadedImage = try await clinet.upload(imageData: imageData)
     } catch RequestError.invalidContentType {
-      return .internalServerError(.init(body: .json(.init(
-        message: "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message:
+                "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+            ))))
     }
 
     return .ok(.init(body: .json(.init(id: uploadedImage.id))))
