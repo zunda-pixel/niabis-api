@@ -35,10 +35,14 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       options: .init(auth: .init(storage: EmptyAuthLocalStorage()))
     )
 
-    try await supabase.auth.signIn(
-      email: basicAuthorization.username,
-      password: basicAuthorization.password
-    )
+    do {
+      try await supabase.auth.signIn(
+        email: basicAuthorization.username,
+        password: basicAuthorization.password
+      )
+    } catch {
+      throw Abort(.notAcceptable, reason: "Not Accept on Supabase")
+    }
 
     return try await next(request, body, metadata)
   }

@@ -7,11 +7,11 @@ extension APIHandler {
     _ input: Operations.generateToken.Input
   ) async throws -> Operations.generateToken.Output {
     guard let userID = UUID(uuidString: input.query.userID) else {
-      throw Abort(.badRequest, reason: "Invalid UUID")
+      return .badRequest(.init(body: .json(.init(message: "Inavlid UUID"))))
     }
 
     guard try await User.find(userID, on: app.db) != nil else {
-      throw Abort(.notFound, reason: "User not found")
+      return .notFound(.init())
     }
 
     let tokenId = UUID()
@@ -31,7 +31,7 @@ extension APIHandler {
     do {
       try await userToken.create(on: app.db)
     } catch {
-      throw Abort(.internalServerError, reason: "Failed to save token information")
+      return .internalServerError(.init(body: .json(.init(message: "Failed to save token information"))))
     }
 
     let token: String
@@ -39,7 +39,7 @@ extension APIHandler {
     do {
       token = try await app.jwt.keys.sign(payload)
     } catch {
-      throw Abort(.internalServerError, reason: "Failed to generate token")
+      return .internalServerError(.init(body: .json(.init(message: "Failed to generate token"))))
     }
 
     return .ok(
@@ -59,7 +59,7 @@ extension APIHandler {
     _ input: Operations.revokeToken.Input
   ) async throws -> Operations.revokeToken.Output {
     guard let tokenId = UUID(uuidString: input.query.tokenId) else {
-      throw Abort(.badRequest, reason: "Invalid UUID")
+      return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 
     let tokenCount = try await UserToken.query(on: app.db)
