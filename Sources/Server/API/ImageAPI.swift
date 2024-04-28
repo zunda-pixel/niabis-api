@@ -26,10 +26,6 @@ extension APIHandler {
       )
     }
 
-    guard let imageURL = uploadedImage.variants.first else {
-      throw Abort(.internalServerError, reason: "Not found Image")
-    }
-
-    return .ok(.init(body: .json(.init(url: imageURL.absoluteString))))
+    return .ok(.init(body: .json(.init(id: uploadedImage.id))))
   }
 }

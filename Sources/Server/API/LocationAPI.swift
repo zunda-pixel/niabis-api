@@ -33,14 +33,14 @@ extension APIHandler {
       apiToken: cloudflareApiToken,
       accountId: cloudflareAccountId
     )
-    let photoURLs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
+    let photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
 
     return .ok(
       .init(
         body: .json(
           .init(
             location: locationDetail,
-            photoURLs: photoURLs
+            photoIDs: photoIDs
           )
         )
       )
@@ -122,19 +122,19 @@ extension Client {
 }
 
 extension ImagesClient {
-  func upload(imageURLs: [URL]) async throws -> [URL] {
-    try await withThrowingTaskGroup(of: URL.self) { group in
+  func upload(imageURLs: [URL]) async throws -> [UUID] {
+    try await withThrowingTaskGroup(of: String.self) { group in
       for imageURL in imageURLs {
         group.addTask {
-          return try await self.upload(imageURL: imageURL).variants.first!
+          return try await self.upload(imageURL: imageURL).id
         }
       }
 
-      var imageURLs: [URL] = []
-      for try await imageURL in group {
-        imageURLs.append(imageURL)
+      var imageIDs: [UUID] = []
+      for try await imageID in group {
+        imageIDs.append(UUID(uuidString: imageID)!)
       }
-      return imageURLs
+      return imageIDs
     }
   }
 }
