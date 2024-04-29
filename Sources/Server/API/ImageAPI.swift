@@ -32,6 +32,7 @@ extension APIHandler {
     do {
       logger.info("Uploading Image Data")
       uploadedImage = try await clinet.upload(imageData: imageData)
+      logger.info("Uploaed Image Data id: \(uploadedImage.id)")
     } catch RequestError.invalidContentType {
       logger.warning(
         "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"

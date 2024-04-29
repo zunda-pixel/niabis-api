@@ -19,6 +19,7 @@ extension APIHandler {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+      logger.info("Fetched User Data id: \(user.id!)")
 
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
@@ -79,6 +80,7 @@ extension APIHandler {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+      logger.info("Fetched User Data id: \(user.id!)")
 
       return .ok(.init(body: .json(user.componentUser)))
     } catch {

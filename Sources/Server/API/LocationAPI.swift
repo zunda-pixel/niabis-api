@@ -28,7 +28,7 @@ extension APIHandler {
         logger.warning("Not Found Location")
         return .notFound(.init())
       }
-
+      logger.info("Searched Location id: \(fetchedLocation.id)")
       location = fetchedLocation
     } catch {
       logger.error("Faile to fetch Location from Tripadvisor")
@@ -42,6 +42,7 @@ extension APIHandler {
         locationId: location.id,
         language: language
       )
+      logger.info("Fetched Location Detail id: \(locationDetail.id)")
     } catch {
       logger.error("Failed to load Location Detail")
       throw error
@@ -55,6 +56,7 @@ extension APIHandler {
         locationId: location.id,
         language: language
       )
+      logger.info("Fetched Location Photo URLs")
     } catch {
       logger.error("Failed to load Location Photo URLs")
       throw error
@@ -68,6 +70,7 @@ extension APIHandler {
       )
       logger.info("Uploading Image URLs to Cloudflare Images")
       photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
+      logger.info("Uploaded Image URLs")
     } catch {
       logger.error("Failed to upload photo ids")
       throw error

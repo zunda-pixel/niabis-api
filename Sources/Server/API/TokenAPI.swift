@@ -16,11 +16,12 @@ extension APIHandler {
     }
 
     do {
-      logger.info("Loading  User Data id: \(userID)")
+      logger.info("Loading User Data id: \(userID)")
       guard try await User.find(userID, on: app.db) != nil else {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+      logger.info("Found User Data id: \(userID)")
     } catch {
       logger.error("Failed to load from DB")
       throw error
@@ -43,6 +44,7 @@ extension APIHandler {
     do {
       logger.info("Inserting New User Token id: \(tokenId)")
       try await userToken.create(on: app.db)
+      logger.info("Inserted New User Token id: \(tokenId)")
     } catch {
       logger.error("Failed to save token information")
       return .internalServerError(
@@ -56,8 +58,9 @@ extension APIHandler {
     let token: String
 
     do {
-      logger.info("Signing Payload with Key")
+      logger.info("Signing Payload with key")
       token = try await app.jwt.keys.sign(payload)
+      logger.info("Signed Payload with key")
     } catch {
       logger.error("Failed to generate token")
       return .internalServerError(
@@ -93,11 +96,12 @@ extension APIHandler {
 
     let tokenCount: Int
     do {
-      logger.info("Fetching User Token")
+      logger.info("Fetching User Token from DB")
       tokenCount = try await UserToken.query(on: app.db)
         .filter(\UserToken.$id, .equal, tokenId)
         .limit(1)
         .count()
+      logger.info("Found User Token on DB")
     } catch {
       logger.error("Failed to load Token data from DB")
       throw error
@@ -113,10 +117,11 @@ extension APIHandler {
     query = query.set(\.$revokedDate, to: Date())
 
     do {
-      logger.info("Upadating User Token's revoked Date")
+      logger.info("Upadating User Token's revoked Date id: \(tokenId)")
       try await query
         .filter(\UserToken.$id, .equal, tokenId)
         .update()
+      logger.info("Uploaded User Token id: \(tokenId)")
     } catch {
       logger.error("Failed to update reveke date")
       throw error
