@@ -2,38 +2,79 @@ import ImagesClient
 import TripadvisorKit
 import Vapor
 
+private let logger = Logger(label: "Location API")
+
 extension APIHandler {
   func getLocationDetail(
     _ input: Operations.getLocationDetail.Input
   ) async throws -> Operations.getLocationDetail.Output {
+    logger.info("Start Get Location Detail")
+
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
+      logger.warning("Invalid Language")
       return .badRequest(.init(body: .json(.init(message: "Inavlid Language"))))
     }
 
-    guard
-      let location = try await searchLocation(
-        query: input.query.locationName,
-        language: language
-      )
-    else {
-      return .notFound(.init())
+    let location: Location
+
+    do {
+      logger.info("Seaching Locaiton on Tripadvisor")
+      guard
+        let fetchedLocation = try await searchLocation(
+          query: input.query.locationName,
+          language: language
+        )
+      else {
+        logger.warning("Not Found Location")
+        return .notFound(.init())
+      }
+      logger.info("Searched Location id: \(fetchedLocation.id)")
+      location = fetchedLocation
+    } catch {
+      logger.error("Faile to fetch Location from Tripadvisor")
+      throw error
     }
 
-    let locationDetail = try await locationDetail(
-      locationId: location.id,
-      language: language
-    )
+    let locationDetail: Location
+    do {
+      logger.info("Fetching Locaiton Detail from Tripadvisor")
+      locationDetail = try await self.locationDetail(
+        locationId: location.id,
+        language: language
+      )
+      logger.info("Fetched Location Detail id: \(locationDetail.id)")
+    } catch {
+      logger.error("Failed to load Location Detail")
+      throw error
+    }
 
-    let tripadvisorPhotoURLs = try await locationPhotoURLs(
-      locationId: location.id,
-      language: language
-    )
+    let tripadvisorPhotoURLs: [URL]
 
-    let client = ImagesClient(
-      apiToken: cloudflareApiToken,
-      accountId: cloudflareAccountId
-    )
-    let photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
+    do {
+      logger.info("Fetching Location Photo URLs from Tripadvisor")
+      tripadvisorPhotoURLs = try await locationPhotoURLs(
+        locationId: location.id,
+        language: language
+      )
+      logger.info("Fetched Location Photo URLs")
+    } catch {
+      logger.error("Failed to load Location Photo URLs")
+      throw error
+    }
+
+    let photoIDs: [UUID]
+    do {
+      let client = ImagesClient(
+        apiToken: cloudflareApiToken,
+        accountId: cloudflareAccountId
+      )
+      logger.info("Uploading Image URLs to Cloudflare Images")
+      photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
+      logger.info("Uploaded Image URLs")
+    } catch {
+      logger.error("Failed to upload photo ids")
+      throw error
+    }
 
     return .ok(
       .init(

@@ -7,6 +7,12 @@ import Vapor
 
 struct BasicAuthenticatorMiddleware: ServerMiddleware {
   let operationIDs: [String]
+  let logger: Logger
+
+  init(operationIDs: [String]) {
+    self.operationIDs = operationIDs
+    self.logger = Logger(label: "Basic Authenticator Middleware")
+  }
 
   func intercept(
     _ request: HTTPTypes.HTTPRequest,
@@ -20,12 +26,15 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       OpenAPIRuntime.HTTPBody?
     )
   ) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
+    logger.info("Start Basic Authenticator")
+
     guard operationIDs.contains(operationID) else {
       return try await next(request, body, metadata)
     }
 
     let httpHeader = HTTPHeaders(request.headerFields.map { ($0.name.rawName, $0.value) })
     guard let basicAuthorization = httpHeader.basicAuthorization else {
+      logger.warning("No Basic Authorization in Headers")
       throw Abort(.notAcceptable)
     }
 
@@ -36,11 +45,17 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
     )
 
     do {
+      logger.info("Start Supabase SignIn userName: \(basicAuthorization.username)")
       try await supabase.auth.signIn(
         email: basicAuthorization.username,
         password: basicAuthorization.password
       )
     } catch {
+      logger.error(
+        """
+        Not Accept on Supabase
+        Error: \(error)
+        """)
       throw Abort(.notAcceptable, reason: "Not Accept on Supabase")
     }
 
