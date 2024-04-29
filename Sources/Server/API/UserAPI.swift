@@ -6,17 +6,20 @@ extension APIHandler {
   func getUserById(
     _ input: Operations.getUserById.Input
   ) async throws -> Operations.getUserById.Output {
+    logger.info("Start Get User by ID")
+
     guard let userID = UUID(uuidString: input.query.userID) else {
       logger.warning("Inavlid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 
     do {
+      logger.info("Fetching User Data from DB")
       guard let user = try await User.find(userID, on: app.db) else {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
-      
+
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load User from DB")
@@ -27,6 +30,8 @@ extension APIHandler {
   func updateUserByID(
     _ input: Operations.updateUserByID.Input
   ) async throws -> Operations.updateUserByID.Output {
+    logger.info("Start Update User by ID")
+
     guard let userID = UUID(uuidString: input.query.userID) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
@@ -38,6 +43,7 @@ extension APIHandler {
 
     let userCount: Int
     do {
+      logger.info("Fetching User from DB")
       userCount = try await User.query(on: app.db)
         .filter(\.$id, .equal, userID).limit(1).count()
     } catch {
@@ -57,6 +63,7 @@ extension APIHandler {
     }
 
     do {
+      logger.info("Upading User Data")
       try await query
         .filter(\User.$id, .equal, userID)
         .update()
@@ -66,11 +73,13 @@ extension APIHandler {
     }
 
     do {
+      logger.info("Fetching User Data from DB")
+
       guard let user = try await User.find(userID, on: app.db) else {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
-      
+
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load data from DB")

@@ -9,7 +9,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
   let excludeOperationIDs: [String]
   let logger: Logger
-  
+
   init(
     app: Vapor.Application,
     excludeOperationIDs: [String]
@@ -58,10 +58,12 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       throw Abort(.notAcceptable, reason: "Token is expired")
     }
 
-    guard let userToken = try await UserToken.find(
-      UUID(uuidString: payload.id.value)!,
-      on: app.db
-    ) else {
+    guard
+      let userToken = try await UserToken.find(
+        UUID(uuidString: payload.id.value)!,
+        on: app.db
+      )
+    else {
       logger.warning("Token is not registered")
       throw Abort(.notAcceptable, reason: "Token is not registered")
     }

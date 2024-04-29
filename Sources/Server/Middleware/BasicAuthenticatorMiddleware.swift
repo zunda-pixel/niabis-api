@@ -8,12 +8,12 @@ import Vapor
 struct BasicAuthenticatorMiddleware: ServerMiddleware {
   let operationIDs: [String]
   let logger: Logger
-  
+
   init(operationIDs: [String]) {
     self.operationIDs = operationIDs
     self.logger = Logger(label: "Basic Authenticator Middleware")
   }
-  
+
   func intercept(
     _ request: HTTPTypes.HTTPRequest,
     body: OpenAPIRuntime.HTTPBody?,
@@ -52,10 +52,10 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       )
     } catch {
       logger.error(
-      """
-      Not Accept on Supabase
-      Error: \(error)
-      """)
+        """
+        Not Accept on Supabase
+        Error: \(error)
+        """)
       throw Abort(.notAcceptable, reason: "Not Accept on Supabase")
     }
 

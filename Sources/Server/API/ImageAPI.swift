@@ -8,6 +8,8 @@ extension APIHandler {
   func uploadImage(
     _ input: Operations.uploadImage.Input
   ) async throws -> Operations.uploadImage.Output {
+    logger.info("Start Upload Image")
+
     let clinet = ImagesClient(
       apiToken: cloudflareApiToken,
       accountId: cloudflareAccountId
@@ -28,14 +30,19 @@ extension APIHandler {
 
     let uploadedImage: Image
     do {
+      logger.info("Uploading Image Data")
       uploadedImage = try await clinet.upload(imageData: imageData)
     } catch RequestError.invalidContentType {
-      logger.warning("Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type")
+      logger.warning(
+        "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+      )
       return .internalServerError(
-        .init(body: .json(.init(
-          message:
-            "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
-        )))
+        .init(
+          body: .json(
+            .init(
+              message:
+                "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+            )))
       )
     } catch {
       logger.error("Failed to upload Image to Cloudflare Images")

@@ -8,22 +8,27 @@ extension APIHandler {
   func getLocationDetail(
     _ input: Operations.getLocationDetail.Input
   ) async throws -> Operations.getLocationDetail.Output {
+    logger.info("Start Get Location Detail")
+
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
       logger.warning("Invalid Language")
       return .badRequest(.init(body: .json(.init(message: "Inavlid Language"))))
     }
 
     let location: Location
-    
+
     do {
-      guard let fetchedLocation = try await searchLocation(
-        query: input.query.locationName,
-        language: language
-      ) else {
+      logger.info("Seaching Locaiton on Tripadvisor")
+      guard
+        let fetchedLocation = try await searchLocation(
+          query: input.query.locationName,
+          language: language
+        )
+      else {
         logger.warning("Not Found Location")
         return .notFound(.init())
       }
-      
+
       location = fetchedLocation
     } catch {
       logger.error("Faile to fetch Location from Tripadvisor")
@@ -32,6 +37,7 @@ extension APIHandler {
 
     let locationDetail: Location
     do {
+      logger.info("Fetching Locaiton Detail from Tripadvisor")
       locationDetail = try await self.locationDetail(
         locationId: location.id,
         language: language
@@ -44,6 +50,7 @@ extension APIHandler {
     let tripadvisorPhotoURLs: [URL]
 
     do {
+      logger.info("Fetching Location Photo URLs from Tripadvisor")
       tripadvisorPhotoURLs = try await locationPhotoURLs(
         locationId: location.id,
         language: language
@@ -59,9 +66,10 @@ extension APIHandler {
         apiToken: cloudflareApiToken,
         accountId: cloudflareAccountId
       )
+      logger.info("Uploading Image URLs to Cloudflare Images")
       photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
     } catch {
-      logger.error("failed to upload photo ids")
+      logger.error("Failed to upload photo ids")
       throw error
     }
 
