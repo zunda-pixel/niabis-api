@@ -18,9 +18,6 @@ struct App {
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
 
-    let registry = PrometheusCollectorRegistry()
-    MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
-
     let privateKey = try EdDSA.PrivateKey(
       x: Environment.get("EdDSA_PUBLIC_KEY")!,
       d: Environment.get("EdDSA_PRIVATE_KEY")!,
@@ -28,6 +25,8 @@ struct App {
     )
     await app.jwt.keys.addEdDSA(key: privateKey)
 
+    let registry = PrometheusCollectorRegistry()
+    MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
     app.get("metrics") { request in
       var buffer: [UInt8] = []
       buffer.reserveCapacity(1024)
