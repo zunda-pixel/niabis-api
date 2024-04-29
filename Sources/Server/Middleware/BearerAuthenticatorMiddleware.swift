@@ -8,6 +8,16 @@ import Vapor
 struct BearerAuthenticatorMiddleware: ServerMiddleware {
   let app: Vapor.Application
   let excludeOperationIDs: [String]
+  let logger: Logger
+  
+  init(
+    app: Vapor.Application,
+    excludeOperationIDs: [String]
+  ) {
+    self.app = app
+    self.excludeOperationIDs = excludeOperationIDs
+    self.logger = Logger(label: "Bearer Authenticator Middleware")
+  }
 
   func intercept(
     _ request: HTTPTypes.HTTPRequest,
@@ -21,28 +31,44 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       OpenAPIRuntime.HTTPBody?
     )
   ) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
+    logger.info("Start Bearer Authenticator")
     guard !excludeOperationIDs.contains(operationID) else {
       return try await next(request, body, metadata)
     }
 
     let header: HTTPHeaders = .init(request.headerFields.map { ($0.name.rawName, $0.value) })
     guard let token = header.bearerAuthorization?.token else {
-      throw Abort(.notAcceptable, reason: "No Token")
+      logger.warning("No Token in headers")
+      throw Abort(.notAcceptable, reason: "No Token in headers")
     }
 
-    let payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
+    let payload: UserPayload
+
+    do {
+      logger.warning("Verifying token")
+      payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
+    } catch {
+      throw error
+    }
+
+    logger.info("Verified token id: \(payload.id)")
 
     guard Date.now < payload.expiration.value else {
-      throw Abort(.notAcceptable, reason: "Token expired")
+      logger.warning("Token is expired")
+      throw Abort(.notAcceptable, reason: "Token is expired")
     }
 
-    guard let userToken = try await UserToken.find(UUID(uuidString: payload.id.value)!, on: app.db)
-    else {
-      throw Abort(.notAcceptable, reason: "Token not registered")
+    guard let userToken = try await UserToken.find(
+      UUID(uuidString: payload.id.value)!,
+      on: app.db
+    ) else {
+      logger.warning("Token is not registered")
+      throw Abort(.notAcceptable, reason: "Token is not registered")
     }
 
     guard userToken.revokedDate == nil else {
-      throw Abort(.notAcceptable, reason: "Token revoked")
+      logger.warning("Token is revoked")
+      throw Abort(.notAcceptable, reason: "Token is revoked")
     }
 
     // override userID query parameter with the one in the token

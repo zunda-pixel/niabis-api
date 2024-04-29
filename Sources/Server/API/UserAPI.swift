@@ -1,34 +1,52 @@
 import Vapor
 
+private let logger = Logger(label: "User API")
+
 extension APIHandler {
-  func getUserById(_ input: Operations.getUserById.Input) async throws
-    -> Operations.getUserById.Output
-  {
+  func getUserById(
+    _ input: Operations.getUserById.Input
+  ) async throws -> Operations.getUserById.Output {
     guard let userID = UUID(uuidString: input.query.userID) else {
+      logger.warning("Inavlid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 
-    guard let user = try await User.find(userID, on: app.db) else {
-      return .notFound(.init())
+    do {
+      guard let user = try await User.find(userID, on: app.db) else {
+        logger.warning("Not Found User")
+        return .notFound(.init())
+      }
+      
+      return .ok(.init(body: .json(user.componentUser)))
+    } catch {
+      logger.error("Failed to load User from DB")
+      throw error
     }
-
-    return .ok(.init(body: .json(user.componentUser)))
   }
 
-  func updateUserByID(_ input: Operations.updateUserByID.Input) async throws
-    -> Operations.updateUserByID.Output
-  {
+  func updateUserByID(
+    _ input: Operations.updateUserByID.Input
+  ) async throws -> Operations.updateUserByID.Output {
     guard let userID = UUID(uuidString: input.query.userID) else {
+      logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
     guard case .json(let user) = input.body else {
+      logger.warning("Requires Users Body")
       return .badRequest(.init(body: .json(.init(message: "Requires Users Body"))))
     }
 
-    let userCount = try await User.query(on: app.db)
-      .filter(\.$id, .equal, userID).limit(1).count()
+    let userCount: Int
+    do {
+      userCount = try await User.query(on: app.db)
+        .filter(\.$id, .equal, userID).limit(1).count()
+    } catch {
+      logger.error("Failed to load data from DB")
+      throw error
+    }
 
     guard userCount > 0 else {
+      logger.warning("Not Found User")
       return .notFound(.init())
     }
 
@@ -38,14 +56,25 @@ extension APIHandler {
       query = query.set(\.$email, to: email)
     }
 
-    try await query
-      .filter(\User.$id, .equal, userID)
-      .update()
-
-    guard let user = try await User.find(userID, on: app.db) else {
-      return .notFound(.init())
+    do {
+      try await query
+        .filter(\User.$id, .equal, userID)
+        .update()
+    } catch {
+      logger.error("Failed to update User")
+      throw error
     }
 
-    return .ok(.init(body: .json(user.componentUser)))
+    do {
+      guard let user = try await User.find(userID, on: app.db) else {
+        logger.warning("Not Found User")
+        return .notFound(.init())
+      }
+      
+      return .ok(.init(body: .json(user.componentUser)))
+    } catch {
+      logger.error("Failed to load data from DB")
+      throw error
+    }
   }
 }
