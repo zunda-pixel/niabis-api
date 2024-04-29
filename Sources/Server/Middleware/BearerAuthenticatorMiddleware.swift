@@ -47,11 +47,11 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     do {
       logger.warning("Verifying token")
       payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
+      logger.info("Verified token id: \(payload.id)")
     } catch {
+      logger.error("Failed to verifiy token")
       throw error
     }
-
-    logger.info("Verified token id: \(payload.id)")
 
     guard Date.now < payload.expiration.value else {
       logger.warning("Token is expired")
