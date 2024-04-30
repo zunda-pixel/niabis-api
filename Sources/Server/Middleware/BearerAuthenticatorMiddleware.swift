@@ -45,7 +45,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     let payload: UserPayload
 
     do {
-      logger.warning("Verifying token")
+      logger.info("Verifying token")
       payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
       logger.info("Verified token id: \(payload.id)")
     } catch {
