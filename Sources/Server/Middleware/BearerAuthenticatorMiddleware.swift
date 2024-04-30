@@ -74,10 +74,22 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     }
 
     // override userID query parameter with the one in the token
-    let url = request.path.map { URL(string: "http://localhost")!.appendingPathComponent($0) }
-    var components = url.map { URLComponents(url: $0, resolvingAgainstBaseURL: false)! }
-    components?.queryItems = [.init(name: "userID", value: payload.userId.value)]
-    let request = components?.url.map { HTTPRequest(url: $0) } ?? request
+    var components = request.path.map { URLComponents(string: $0)! }!
+    if components.queryItems == nil {
+      components.queryItems = [.init(name: "userID", value: payload.userId.value)]
+    } else if components.queryItems!.contains(where: { $0.name == "userID" }) {
+      components.queryItems!.removeAll { $0.name == "userID" }
+      components.queryItems!.append(.init(name: "userID", value: payload.userId.value))
+    } else {
+      components.queryItems!.append(.init(name: "userID", value: payload.userId.value))
+    }
+    let request = HTTPRequest(
+      method: request.method,
+      scheme: request.scheme,
+      authority: request.authority,
+      path: components.url!.absoluteString,
+      headerFields: request.headerFields
+    )
 
     return try await next(request, body, metadata)
   }

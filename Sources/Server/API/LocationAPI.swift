@@ -39,7 +39,7 @@ extension APIHandler {
       logger.info("Searched Location id: \(fetchedLocation.id)")
       location = fetchedLocation
     } catch {
-      logger.error("Faile to fetch Location from Tripadvisor")
+      logger.error("Failed to fetch Location from Tripadvisor")
       throw error
     }
 
