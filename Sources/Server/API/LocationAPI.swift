@@ -8,6 +8,14 @@ extension APIHandler {
   func getLocationDetail(
     _ input: Operations.getLocationDetail.Input
   ) async throws -> Operations.getLocationDetail.Output {
+    logger.debug("Location Debug Log")
+    logger.info("Location Info Log")
+    logger.trace("Location Trace Log")
+    logger.warning("Location Warning Log")
+    logger.error("Location Error Log")
+    logger.critical("Location Critical Log")
+    logger.notice("Location Notice Log")
+
     logger.info("Start Get Location Detail")
 
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
