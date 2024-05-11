@@ -31,11 +31,6 @@ extension APIHandler {
     imageURL: URL,
     logger: Logger
   ) async -> Operations.uploadImage.Output {
-    let client = ImagesClient(
-      apiToken: cloudflareApiToken,
-      accountId: cloudflareAccountId
-    )
-
     let uploadedImage: Image
     do {
       let client = ImagesClient(
