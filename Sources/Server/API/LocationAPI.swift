@@ -2,12 +2,12 @@ import ImagesClient
 import TripadvisorKit
 import Vapor
 
-private let logger = Logger(label: "Location API")
-
 extension APIHandler {
   func getLocationDetail(
     _ input: Operations.getLocationDetail.Input
   ) async throws -> Operations.getLocationDetail.Output {
+    let logger = Logger(label: "Get Location API request-id: \(UUID())")
+
     logger.info("Start Get Location Detail")
 
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
