@@ -55,6 +55,12 @@ final class ServerTests: XCTestCase {
     _ = try response.ok.body.json.id
   }
 
+  func testUploadImageWithURL() async throws {
+    let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
+    let response = try await handler.uploadImage(query: .init(imageURL: imageURL.absoluteString))
+    _ = try response.ok.body.json.id
+  }
+
   func testGetUserById() async throws {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
@@ -65,28 +71,46 @@ final class ServerTests: XCTestCase {
   func testGetLocation() async throws {
     let response = try await handler.getLocationDetail(
       query: .init(
-        locationName: "Old Ebbitt Grill",
+        locationName: "Roscioli New York",
         language: .en
       )
     )
 
     let location = try response.ok.body.json
 
-    XCTAssertEqual(location.id, 450339)
+    XCTAssertEqual(location.id, 789274)
     XCTAssertEqual(
       location.description,
-      "Indoor DiningPrivate EventsCarryoutChef Joseph AllenAround the corner from The White House"
+      #"Ristorante Salumeria Roscioli is a multi-function delicatessen, an unconventional restaurant, and a rich and varied wine bar, where the cuisine is based on high quality materials selected over the years by the Roscioli brothers and an attentive and ready staff. The menu presents traditional starters and main dishes, as well as the results of conceptions from the national cuisine – raw fish from the Mediterranean and Tyrrhenian, selections of French or Italian Alpine cheeses, classified by typology and maturation, but also cold cuts of Spanish or native origin, all cut by hand."#
     )
     XCTAssertEqual(
       location.cuisines,
       [
-        .init(name: "american", localizedName: "American"),
-        .init(name: "bar", localizedName: "Bar"),
-        .init(name: "seafood", localizedName: "Seafood"),
-        .init(name: "soups", localizedName: "Soups"),
+        .init(name: "deli", localizedName: "Deli"),
+        .init(name: "italian", localizedName: "Italian"),
+        .init(name: "mediterranean", localizedName: "Mediterranean"),
+        .init(name: "european", localizedName: "European"),
+        .init(name: "romana", localizedName: "Romana"),
+        .init(name: "lazio", localizedName: "Lazio"),
+        .init(name: "centralitalian", localizedName: "Central-Italian"),
       ]
     )
-    XCTAssertEqual(location.photoIDs.compactMap { UUID(uuidString: $0) }.count, 5)
+    XCTAssertEqual(
+      location.imageURLs,
+      [
+        URL(
+          string:
+            "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg"
+        )!,
+        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/38/60/wines.jpg")!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/6e/cacio-e-pepe.jpg")!,
+        URL(
+          string:
+            "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/68/nabil-hassen-the-chef.jpg")!,
+        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/64/gnocchi.jpg")!,
+      ].map(\.absoluteString)
+    )
   }
 
   func testGetToken() async throws {

@@ -62,26 +62,12 @@ extension APIHandler {
       throw error
     }
 
-    let photoIDs: [UUID]
-    do {
-      let client = ImagesClient(
-        apiToken: cloudflareApiToken,
-        accountId: cloudflareAccountId
-      )
-      logger.info("Uploading Image URLs to Cloudflare Images")
-      photoIDs = try await client.upload(imageURLs: tripadvisorPhotoURLs)
-      logger.info("Uploaded Image URLs")
-    } catch {
-      logger.error("Failed to upload photo ids")
-      throw error
-    }
-
     return .ok(
       .init(
         body: .json(
           .init(
             location: locationDetail,
-            photoIDs: photoIDs
+            imageURLs: tripadvisorPhotoURLs
           )
         )
       )

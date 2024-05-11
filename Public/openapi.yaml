@@ -34,8 +34,16 @@ paths:
         - Image
       summary: Upload Image
       operationId: uploadImage
+      parameters:
+        - name: imageURL
+          in: query
+          description: Image URL
+          required: false
+          schema:
+            type: string
+            format: uri
       requestBody:
-        required: true
+        required: false
         description: image to upload
         content:
           image/*:
@@ -279,17 +287,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LabelContent'
-        photoIDs:
+        imageURLs:
           type: array
           items:
             type: string
-            format: uuid
-            description: Photo ID
+            format: uri
+            description: Image URL
       required:
         - id
         - description
         - cuisines
-        - photoIDs
+        - imageURLs
         
     User:
       type: object
