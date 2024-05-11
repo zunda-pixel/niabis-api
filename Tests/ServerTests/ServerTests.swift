@@ -55,6 +55,12 @@ final class ServerTests: XCTestCase {
     _ = try response.ok.body.json.id
   }
 
+  func testUploadImageWithURL() async throws {
+    let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
+    let response = try await handler.uploadImage(query: .init(imageURL: imageURL.absoluteString))
+    _ = try response.ok.body.json.id
+  }
+
   func testGetUserById() async throws {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
@@ -92,10 +98,16 @@ final class ServerTests: XCTestCase {
     XCTAssertEqual(
       location.imageURLs,
       [
-        URL(string: "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg")!,
+        URL(
+          string:
+            "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg"
+        )!,
         URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/38/60/wines.jpg")!,
-        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/6e/cacio-e-pepe.jpg")!,
-        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/68/nabil-hassen-the-chef.jpg")!,
+        URL(
+          string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/6e/cacio-e-pepe.jpg")!,
+        URL(
+          string:
+            "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/68/nabil-hassen-the-chef.jpg")!,
         URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/64/gnocchi.jpg")!,
       ].map(\.absoluteString)
     )
