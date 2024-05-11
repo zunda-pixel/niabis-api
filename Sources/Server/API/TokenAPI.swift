@@ -2,12 +2,12 @@ import Foundation
 import JWTKit
 import Vapor
 
-private let logger = Logger(label: "Token API")
-
 extension APIHandler {
   func generateToken(
     _ input: Operations.generateToken.Input
   ) async throws -> Operations.generateToken.Output {
+    let logger = Logger(label: "Generate Token API request-id: \(UUID())")
+
     logger.info("Start Generate Token")
 
     guard let userID = UUID(uuidString: input.query.userID) else {
@@ -87,6 +87,7 @@ extension APIHandler {
   func revokeToken(
     _ input: Operations.revokeToken.Input
   ) async throws -> Operations.revokeToken.Output {
+    let logger = Logger(label: "Rovoke Token API request-id: \(UUID())")
     logger.info("Start Revoke Token")
 
     guard let tokenId = UUID(uuidString: input.query.tokenId) else {

@@ -1,11 +1,11 @@
 import Vapor
 
-private let logger = Logger(label: "User API")
-
 extension APIHandler {
   func getUserById(
     _ input: Operations.getUserById.Input
   ) async throws -> Operations.getUserById.Output {
+    let logger = Logger(label: "Get User API request-id: \(UUID())")
+
     logger.info("Start Get User by ID")
 
     guard let userID = UUID(uuidString: input.query.userID) else {
@@ -31,6 +31,8 @@ extension APIHandler {
   func updateUserByID(
     _ input: Operations.updateUserByID.Input
   ) async throws -> Operations.updateUserByID.Output {
+    let logger = Logger(label: "Update User API request-id: \(UUID())")
+
     logger.info("Start Update User by ID")
 
     guard let userID = UUID(uuidString: input.query.userID) else {

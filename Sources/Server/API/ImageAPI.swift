@@ -3,33 +3,34 @@ import ImagesClient
 import OpenAPIRuntime
 import Vapor
 
-private let logger = Logger(label: "Image API")
-
 extension APIHandler {
   func uploadImage(
     _ input: Operations.uploadImage.Input
   ) async throws -> Operations.uploadImage.Output {
+    let logger = Logger(label: "Upload Image API request-id: \(UUID())")
+
     logger.info("Start Upload Image")
 
     if case .image__ast_(let body) = input.body {
-      return await uploadImageData(imageBody: body)
+      logger.info("Upload image from Data")
+      return await uploadImageData(imageBody: body, logger: logger)
     } else if let imageURL = input.query.imageURL {
       guard let url = URL(string: imageURL) else {
+        logger.warning("Invalid URL Format")
         return .badRequest(.init(body: .json(.init(message: "Invalid URL Format"))))
       }
-      return await uploadImageURL(imageURL: url)
+      logger.info("Upload image from URL")
+      return await uploadImageURL(imageURL: url, logger: logger)
     } else {
       logger.warning("Requires Image Data or Image URL")
       return .badRequest(.init(body: .json(.init(message: "Requires Image Data or Image URL"))))
     }
   }
 
-  private func uploadImageURL(imageURL: URL) async -> Operations.uploadImage.Output {
-    let client = ImagesClient(
-      apiToken: cloudflareApiToken,
-      accountId: cloudflareAccountId
-    )
-
+  private func uploadImageURL(
+    imageURL: URL,
+    logger: Logger
+  ) async -> Operations.uploadImage.Output {
     let uploadedImage: Image
     do {
       let client = ImagesClient(
@@ -60,7 +61,10 @@ extension APIHandler {
     return .ok(.init(body: .json(.init(id: uploadedImage.id))))
   }
 
-  private func uploadImageData(imageBody: HTTPBody) async -> Operations.uploadImage.Output {
+  private func uploadImageData(
+    imageBody: HTTPBody,
+    logger: Logger
+  ) async -> Operations.uploadImage.Output {
     let imageData: Data
 
     do {
