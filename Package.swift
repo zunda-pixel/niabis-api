@@ -20,7 +20,7 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-format", from: "509.0.0"),
     .package(url: "https://github.com/apple/swift-metrics", from: "2.4.1"),
     .package(url: "https://github.com/swift-server/swift-prometheus", from: "2.0.0"),
-    .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.0.1"),
+    .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.2.0"),
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.3"), // TODO
     .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
     .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.0.2"),

@@ -455,8 +455,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/tripadvisor-swift",
       "state" : {
-        "revision" : "4f1ada620eed7143437121f341c044440cc766d1",
-        "version" : "0.0.4"
+        "revision" : "e4a9cafd286607b8872379df30b4dc6eeb6732b6",
+        "version" : "0.2.0"
       }
     },
     {
