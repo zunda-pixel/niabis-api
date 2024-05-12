@@ -57,7 +57,7 @@ final class ServerTests: XCTestCase {
 
   func testUploadImageWithURL() async throws {
     let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
-    let response = try await handler.uploadImage(query: .init(imageURL: imageURL.absoluteString))
+    let response = try await handler.uploadImage(.init(body: .json(imageURL.absoluteString)))
     _ = try response.ok.body.json.id
   }
 
