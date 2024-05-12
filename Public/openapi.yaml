@@ -34,14 +34,6 @@ paths:
         - Image
       summary: Upload Image
       operationId: uploadImage
-      parameters:
-        - name: imageURL
-          in: query
-          description: Image URL
-          required: false
-          schema:
-            type: string
-            format: uri
       requestBody:
         required: false
         description: image to upload
@@ -50,6 +42,10 @@ paths:
             schema:
               type: string
               format: binary
+          application/json:
+            schema:
+              type: string
+              format: uri
       responses:
         '200':
           description: successful operation

@@ -11,19 +11,22 @@ extension APIHandler {
 
     logger.info("Start Upload Image")
 
-    if case .image__ast_(let body) = input.body {
+    guard let body = input.body else {
+      logger.warning("Requires Image Data or Image URL")
+      return .badRequest(.init(body: .json(.init(message: "Requires Image Data or Image URL"))))
+    }
+    
+    switch body {
+    case .image__ast_(let body):
       logger.info("Upload image from Data")
       return await uploadImageData(imageBody: body, logger: logger)
-    } else if let imageURL = input.query.imageURL {
+    case .json(let imageURL):
       guard let url = URL(string: imageURL) else {
         logger.warning("Invalid URL Format")
         return .badRequest(.init(body: .json(.init(message: "Invalid URL Format"))))
       }
       logger.info("Upload image from URL")
       return await uploadImageURL(imageURL: url, logger: logger)
-    } else {
-      logger.warning("Requires Image Data or Image URL")
-      return .badRequest(.init(body: .json(.init(message: "Requires Image Data or Image URL"))))
     }
   }
 
