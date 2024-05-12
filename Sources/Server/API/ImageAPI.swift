@@ -45,14 +45,14 @@ extension APIHandler {
       logger.info("Uploaed Image Data id: \(uploadedImage.id)")
     } catch RequestError.invalidContentType {
       logger.warning(
-        "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+        "Invalid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
       )
       return .internalServerError(
         .init(
           body: .json(
             .init(
               message:
-                "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+                "Invalid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
             )))
       )
     } catch {
@@ -89,14 +89,14 @@ extension APIHandler {
       logger.info("Uploaed Image Data id: \(uploadedImage.id)")
     } catch RequestError.invalidContentType {
       logger.warning(
-        "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+        "Invalid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
       )
       return .internalServerError(
         .init(
           body: .json(
             .init(
               message:
-                "Inavlid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
+                "Invalid Content-Type. image must have image/jpeg, image/png, image/webp, image/gif or image/svg+xml content-type"
             )))
       )
     } catch {

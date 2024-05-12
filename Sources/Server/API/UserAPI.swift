@@ -9,7 +9,7 @@ extension APIHandler {
     logger.info("Start Get User by ID")
 
     guard let userID = UUID(uuidString: input.query.userID) else {
-      logger.warning("Inavlid UUID")
+      logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 

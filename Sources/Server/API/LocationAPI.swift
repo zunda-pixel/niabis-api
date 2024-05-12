@@ -12,7 +12,7 @@ extension APIHandler {
 
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
       logger.warning("Invalid Language")
-      return .badRequest(.init(body: .json(.init(message: "Inavlid Language"))))
+      return .badRequest(.init(body: .json(.init(message: "Invalid Language"))))
     }
 
     let location: Location
