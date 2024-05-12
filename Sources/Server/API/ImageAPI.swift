@@ -15,7 +15,7 @@ extension APIHandler {
       logger.warning("Requires Image Data or Image URL")
       return .badRequest(.init(body: .json(.init(message: "Requires Image Data or Image URL"))))
     }
-    
+
     switch body {
     case .image__ast_(let body):
       logger.info("Upload image from Data")
