@@ -20,8 +20,8 @@ extension APIHandler {
     case .image__ast_(let body):
       logger.info("Upload image from Data")
       return await uploadImageData(imageBody: body, logger: logger)
-    case .json(let imageURL):
-      guard let url = URL(string: imageURL) else {
+    case .json(let image):
+      guard let url = URL(string: image.url) else {
         logger.warning("Invalid URL Format")
         return .badRequest(.init(body: .json(.init(message: "Invalid URL Format"))))
       }
