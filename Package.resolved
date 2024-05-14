@@ -1,4 +1,5 @@
 {
+  "originHash" : "58685c73bccb06daf0d2eb756bfbbc4293980e55cd5cc42844e99b7f8c89ab67",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -88,15 +89,6 @@
       "state" : {
         "revision" : "6f512cb5a531e684f2e5238924be81db0b3303b4",
         "version" : "5.0.0-beta.3"
-      }
-    },
-    {
-      "identity" : "keychainaccess",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
-      "state" : {
-        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
-        "version" : "4.2.2"
       }
     },
     {
@@ -311,8 +303,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-metrics",
       "state" : {
-        "revision" : "971ba26378ab69c43737ee7ba967a896cb74c0d1",
-        "version" : "2.4.1"
+        "revision" : "eb18581491dfb266a2342f74e0bdd42c14798297",
+        "version" : "2.4.2"
       }
     },
     {
