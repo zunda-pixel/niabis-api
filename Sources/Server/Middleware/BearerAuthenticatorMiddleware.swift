@@ -39,7 +39,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
     let header: HTTPHeaders = .init(request.headerFields.map { ($0.name.rawName, $0.value) })
     guard let token = header.bearerAuthorization?.token else {
       logger.warning("No Token in headers")
-      throw Abort(.notAcceptable, reason: "No Token in headers")
+      return try await next(request, body, metadata)
     }
 
     let payload: UserPayload
@@ -50,12 +50,12 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       logger.info("Verified token id: \(payload.id)")
     } catch {
       logger.error("Failed to verifiy token")
-      throw error
+      return try await next(request, body, metadata)
     }
 
     guard Date.now < payload.expiration.value else {
       logger.warning("Token is expired")
-      throw Abort(.notAcceptable, reason: "Token is expired")
+      return try await next(request, body, metadata)
     }
 
     guard
@@ -65,32 +65,18 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       )
     else {
       logger.warning("Token is not registered")
-      throw Abort(.notAcceptable, reason: "Token is not registered")
+      return try await next(request, body, metadata)
     }
 
     guard userToken.revokedDate == nil else {
       logger.warning("Token is revoked")
-      throw Abort(.notAcceptable, reason: "Token is revoked")
+      return try await next(request, body, metadata)
     }
+    
+    let authenticateUser = BearerAuthenticateUser(userID: userToken.userId)
 
-    // override userID query parameter with the one in the token
-    var components = request.path.map { URLComponents(string: $0)! }!
-    if components.queryItems == nil {
-      components.queryItems = [.init(name: "userID", value: payload.userId.value)]
-    } else if components.queryItems!.contains(where: { $0.name == "userID" }) {
-      components.queryItems!.removeAll { $0.name == "userID" }
-      components.queryItems!.append(.init(name: "userID", value: payload.userId.value))
-    } else {
-      components.queryItems!.append(.init(name: "userID", value: payload.userId.value))
+    return try await BearerAuthenticateUser.$current.withValue(authenticateUser) {
+      try await next(request, body, metadata)
     }
-    let request = HTTPRequest(
-      method: request.method,
-      scheme: request.scheme,
-      authority: request.authority,
-      path: components.url!.absoluteString,
-      headerFields: request.headerFields
-    )
-
-    return try await next(request, body, metadata)
   }
 }
