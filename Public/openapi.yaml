@@ -129,6 +129,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: Token not found
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /locationDetail:
     get:
       security:
@@ -205,6 +211,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User not found
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     patch:
       tags:
         - User
@@ -240,7 +252,12 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
         '404':
           description: User not found
-
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 security:
   - basicAuth: []
   - bearerAuth: []

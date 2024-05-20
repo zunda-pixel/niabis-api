@@ -33,7 +33,7 @@ extension APIHandler {
       logger.info("Found User Data id: \(userID)")
     } catch {
       logger.error("Failed to load from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load from DB"))))
     }
 
     let tokenId = UUID()
@@ -134,7 +134,7 @@ extension APIHandler {
       logger.info("Uploaded User Token id: \(tokenId)")
     } catch {
       logger.error("Failed to update reveke date")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to update reveke date"))))
     }
 
     return .ok(.init())

@@ -24,7 +24,7 @@ extension APIHandler {
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load User from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load User from DB"))))
     }
   }
 
@@ -51,7 +51,7 @@ extension APIHandler {
         .filter(\.$id, .equal, userID).limit(1).count()
     } catch {
       logger.error("Failed to load data from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load data from DB"))))
     }
 
     guard userCount > 0 else {
@@ -72,7 +72,7 @@ extension APIHandler {
         .update()
     } catch {
       logger.error("Failed to update User")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to update User"))))
     }
 
     do {
@@ -87,7 +87,7 @@ extension APIHandler {
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load data from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load data from DB"))))
     }
   }
 }
