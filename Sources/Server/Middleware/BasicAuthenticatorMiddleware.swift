@@ -59,8 +59,8 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       return try await next(request, body, metadata)
     }
     
-    let user = BasicAuthenticateUser(name: basicAuthorization.username)
-    return try await BasicAuthenticateUser.$current.withValue(user) {
+    let user = AuthenticateUser(name: basicAuthorization.username)
+    return try await AuthenticateUser.$current.withValue(user) {
       try await next(request, body, metadata)
     }
   }

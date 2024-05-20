@@ -6,7 +6,7 @@ extension APIHandler {
   func generateToken(
     _ input: Operations.generateToken.Input
   ) async throws -> Operations.generateToken.Output {
-    guard let basicAuthUser = BasicAuthenticateUser.current else {
+    guard let basicAuthUser = AuthenticateUser.current else {
       return .unauthorized(.init())
     }
 
