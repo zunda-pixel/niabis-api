@@ -51,7 +51,9 @@ final class ServerTests: XCTestCase {
   func testUploadImageWithData() async throws {
     let filePath = Bundle.module.url(forResource: "Swift_logo", withExtension: "svg")!
     let imageData = try Data(contentsOf: filePath)
-    let authUser = BearerAuthenticateUser(userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!)
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    )
     let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
       try await handler.uploadImage(.init(body: .image__ast_(.init(imageData))))
     }
@@ -60,7 +62,9 @@ final class ServerTests: XCTestCase {
 
   func testUploadImageWithURL() async throws {
     let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
-    let authUser = BearerAuthenticateUser(userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!)
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    )
     let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
       try await handler.uploadImage(
         .init(body: .json(.init(url: imageURL.absoluteString)))
@@ -80,7 +84,9 @@ final class ServerTests: XCTestCase {
   }
 
   func testGetLocation() async throws {
-    let authUser = BearerAuthenticateUser(userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!)
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    )
     let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
       try await handler.getLocationDetail(
         query: .init(
@@ -129,7 +135,7 @@ final class ServerTests: XCTestCase {
 
   func testGenerateToken() async throws {
     let authUser = AuthenticateUser(name: "test@niabis.com")
-    let response: Operations.generateToken.Output = try await AuthenticateUser.$current.withValue(authUser) {
+    let response = try await AuthenticateUser.$current.withValue(authUser) {
       try await handler.generateToken(
         query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
       )
@@ -139,7 +145,7 @@ final class ServerTests: XCTestCase {
 
   func testRevokeToken() async throws {
     let basicAuthUser = AuthenticateUser(name: "test@niabis.com")
-    
+
     let tokenResponse = try await AuthenticateUser.$current.withValue(basicAuthUser) {
       try await handler.generateToken(
         query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
@@ -148,7 +154,9 @@ final class ServerTests: XCTestCase {
 
     let tokenId = try tokenResponse.ok.body.json.id
 
-    let authUser = BearerAuthenticateUser(userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!)
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    )
     let revokeResponse = try await BearerAuthenticateUser.$current.withValue(authUser) {
       try await handler.revokeToken(
         query: .init(tokenId: tokenId)
