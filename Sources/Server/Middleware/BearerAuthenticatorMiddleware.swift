@@ -73,7 +73,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       return try await next(request, body, metadata)
     }
 
-    let authenticateUser = BearerAuthenticateUser(userID: userToken.userId)
+    let authenticateUser = BearerAuthenticateUser(userId: userToken.userId)
 
     return try await BearerAuthenticateUser.$current.withValue(authenticateUser) {
       try await next(request, body, metadata)

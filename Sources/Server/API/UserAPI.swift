@@ -25,7 +25,7 @@ extension APIHandler {
         return .notFound(.init())
       }
 
-      guard user.id == authUser.userID else {
+      guard user.id == authUser.userId else {
         logger.warning("Invalid User ID")
         return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
       }
@@ -57,7 +57,7 @@ extension APIHandler {
         .init(body: .json(.init(message: "Invalid UUID id: \(input.query.userID)"))))
     }
 
-    guard auth.userID == userID else {
+    guard auth.userId == userID else {
       logger.warning("Invalid UUID ID: \(userID)")
       return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
     }

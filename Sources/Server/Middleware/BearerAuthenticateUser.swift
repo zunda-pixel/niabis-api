@@ -3,9 +3,9 @@ import Foundation
 struct BearerAuthenticateUser: Hashable {
   @TaskLocal static var current: BearerAuthenticateUser?
 
-  var userID: UUID
+  var userId: UUID
 
-  init(userID: UUID) {
-    self.userID = userID
+  init(userId: UUID) {
+    self.userId = userId
   }
 }

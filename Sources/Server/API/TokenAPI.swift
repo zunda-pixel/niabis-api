@@ -117,7 +117,7 @@ extension APIHandler {
         logger.warning("Not Found Token in DB")
         return .notFound(.init())
       }
-      guard token.userId == authUser.userID else {
+      guard token.userId == authUser.userId else {
         logger.warning("Invalid User ID")
         return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
       }
