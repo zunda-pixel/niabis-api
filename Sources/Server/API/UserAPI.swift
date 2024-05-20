@@ -8,6 +8,11 @@ extension APIHandler {
 
     logger.info("Start Get User by ID")
 
+    guard let authUser = BearerAuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let userID = UUID(uuidString: input.query.userID) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
@@ -19,6 +24,12 @@ extension APIHandler {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+      
+      guard user.id == authUser.userID else {
+        logger.warning("Invalid User ID")
+        return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+      }
+
       logger.info("Fetched User Data id: \(user.id!)")
 
       return .ok(.init(body: .json(user.componentUser)))
@@ -35,10 +46,21 @@ extension APIHandler {
 
     logger.info("Start Update User by ID")
 
-    guard let userID = UUID(uuidString: input.query.userID) else {
-      logger.warning("Invalid UUID")
-      return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
+    guard let auth = BearerAuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
     }
+
+    guard let userID = UUID(uuidString: input.query.userID) else {
+      logger.warning("Invalid UUID id: \(input.query.userID)")
+      return .badRequest(.init(body: .json(.init(message: "Invalid UUID id: \(input.query.userID)"))))
+    }
+    
+    guard auth.userID == userID else {
+      logger.warning("Invalid UUID ID: \(userID)")
+      return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+    }
+    
     guard case .json(let user) = input.body else {
       logger.warning("Requires Users Body")
       return .badRequest(.init(body: .json(.init(message: "Requires Users Body"))))

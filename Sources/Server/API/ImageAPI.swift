@@ -11,6 +11,11 @@ extension APIHandler {
 
     logger.info("Start Upload Image")
 
+    guard BearerAuthenticateUser.current != nil else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let body = input.body else {
       logger.warning("Requires Image Data or Image URL")
       return .badRequest(.init(body: .json(.init(message: "Requires Image Data or Image URL"))))

@@ -58,6 +58,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '500':
           description: Internal Error
           content:
@@ -127,6 +129,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: Token not found
         '500':
@@ -171,6 +175,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: Location not found
         '500':
@@ -209,6 +215,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: User not found
         '500':
@@ -250,6 +258,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: User not found
         '500':

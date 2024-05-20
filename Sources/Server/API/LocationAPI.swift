@@ -10,6 +10,11 @@ extension APIHandler {
 
     logger.info("Start Get Location Detail")
 
+    guard BearerAuthenticateUser.current != nil else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
       logger.warning("Invalid Language")
       return .badRequest(.init(body: .json(.init(message: "Invalid Language"))))
