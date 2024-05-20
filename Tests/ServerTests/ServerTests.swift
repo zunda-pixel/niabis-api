@@ -51,32 +51,50 @@ final class ServerTests: XCTestCase {
   func testUploadImageWithData() async throws {
     let filePath = Bundle.module.url(forResource: "Swift_logo", withExtension: "svg")!
     let imageData = try Data(contentsOf: filePath)
-    let response = try await handler.uploadImage(.init(body: .image__ast_(.init(imageData))))
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
+    )
+    let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
+      try await handler.uploadImage(.init(body: .image__ast_(.init(imageData))))
+    }
     _ = try response.ok.body.json.id
   }
 
   func testUploadImageWithURL() async throws {
     let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
-    let response = try await handler.uploadImage(
-      .init(body: .json(.init(url: imageURL.absoluteString)))
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     )
+    let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
+      try await handler.uploadImage(
+        .init(body: .json(.init(url: imageURL.absoluteString)))
+      )
+    }
     _ = try response.ok.body.json.id
   }
 
   func testGetUserById() async throws {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
-    let response = try await handler.getUserById(query: .init(userID: userID.uuidString))
+    let authUser = BearerAuthenticateUser(userId: userID)
+    let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
+      try await handler.getUserById(query: .init(userID: userID.uuidString))
+    }
     let json = try response.ok.body.json
     XCTAssertEqual(json, .init(id: userID.uuidString, email: "test@niabis.com"))
   }
 
   func testGetLocation() async throws {
-    let response = try await handler.getLocationDetail(
-      query: .init(
-        locationName: "Roscioli New York",
-        language: .en
-      )
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     )
+    let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
+      try await handler.getLocationDetail(
+        query: .init(
+          locationName: "Roscioli New York",
+          language: .en
+        )
+      )
+    }
 
     let location = try response.ok.body.json
 
@@ -115,23 +133,35 @@ final class ServerTests: XCTestCase {
     )
   }
 
-  func testGetToken() async throws {
-    let response = try await handler.generateToken(
-      query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
-    )
+  func testGenerateToken() async throws {
+    let authUser = AuthenticateUser(name: "test@niabis.com")
+    let response = try await AuthenticateUser.$current.withValue(authUser) {
+      try await handler.generateToken(
+        query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
+      )
+    }
     _ = try response.ok.body.json
   }
 
   func testRevokeToken() async throws {
-    let tokenResponse = try await handler.generateToken(
-      query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
-    )
+    let basicAuthUser = AuthenticateUser(name: "test@niabis.com")
+
+    let tokenResponse = try await AuthenticateUser.$current.withValue(basicAuthUser) {
+      try await handler.generateToken(
+        query: .init(userID: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!.uuidString)
+      )
+    }
 
     let tokenId = try tokenResponse.ok.body.json.id
 
-    let revokeResponse = try await handler.revokeToken(
-      query: .init(tokenId: tokenId)
+    let authUser = BearerAuthenticateUser(
+      userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     )
+    let revokeResponse = try await BearerAuthenticateUser.$current.withValue(authUser) {
+      try await handler.revokeToken(
+        query: .init(tokenId: tokenId)
+      )
+    }
     _ = try revokeResponse.ok
   }
 }

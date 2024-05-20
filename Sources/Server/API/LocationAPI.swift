@@ -10,6 +10,11 @@ extension APIHandler {
 
     logger.info("Start Get Location Detail")
 
+    guard BearerAuthenticateUser.current != nil else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let language: Language = .init(rawValue: input.query.language.rawValue) else {
       logger.warning("Invalid Language")
       return .badRequest(.init(body: .json(.init(message: "Invalid Language"))))
@@ -32,7 +37,13 @@ extension APIHandler {
       location = fetchedLocation
     } catch {
       logger.error("Failed to fetch Location from Tripadvisor")
-      throw error
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to fetch Location from Tripadvisor"
+            )))
+      )
     }
 
     let locationDetail: Location
@@ -45,7 +56,13 @@ extension APIHandler {
       logger.info("Fetched Location Detail id: \(locationDetail.id)")
     } catch {
       logger.error("Failed to load Location Detail")
-      throw error
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Location Detail"
+            )))
+      )
     }
 
     let tripadvisorPhotoURLs: [URL]
@@ -59,7 +76,13 @@ extension APIHandler {
       logger.info("Fetched Location Photo URLs")
     } catch {
       logger.error("Failed to load Location Photo URLs")
-      throw error
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Location Photo URLs"
+            )))
+      )
     }
 
     return .ok(

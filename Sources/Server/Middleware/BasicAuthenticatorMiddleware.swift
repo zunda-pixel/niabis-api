@@ -35,7 +35,7 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
     let httpHeader = HTTPHeaders(request.headerFields.map { ($0.name.rawName, $0.value) })
     guard let basicAuthorization = httpHeader.basicAuthorization else {
       logger.warning("No Basic Authorization in Headers")
-      throw Abort(.notAcceptable)
+      return try await next(request, body, metadata)
     }
 
     let supabase = SupabaseClient(
@@ -56,9 +56,12 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
         Not Accept on Supabase
         Error: \(error)
         """)
-      throw Abort(.notAcceptable, reason: "Not Accept on Supabase")
+      return try await next(request, body, metadata)
     }
 
-    return try await next(request, body, metadata)
+    let user = AuthenticateUser(name: basicAuthorization.username)
+    return try await AuthenticateUser.$current.withValue(user) {
+      try await next(request, body, metadata)
+    }
   }
 }

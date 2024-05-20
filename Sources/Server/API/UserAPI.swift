@@ -8,6 +8,11 @@ extension APIHandler {
 
     logger.info("Start Get User by ID")
 
+    guard let authUser = BearerAuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let userID = UUID(uuidString: input.query.userID) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
@@ -19,12 +24,18 @@ extension APIHandler {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+
+      guard user.id == authUser.userId else {
+        logger.warning("Invalid User ID")
+        return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+      }
+
       logger.info("Fetched User Data id: \(user.id!)")
 
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load User from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load User from DB"))))
     }
   }
 
@@ -35,10 +46,22 @@ extension APIHandler {
 
     logger.info("Start Update User by ID")
 
-    guard let userID = UUID(uuidString: input.query.userID) else {
-      logger.warning("Invalid UUID")
-      return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
+    guard let auth = BearerAuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
     }
+
+    guard let userID = UUID(uuidString: input.query.userID) else {
+      logger.warning("Invalid UUID id: \(input.query.userID)")
+      return .badRequest(
+        .init(body: .json(.init(message: "Invalid UUID id: \(input.query.userID)"))))
+    }
+
+    guard auth.userId == userID else {
+      logger.warning("Invalid UUID ID: \(userID)")
+      return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+    }
+
     guard case .json(let user) = input.body else {
       logger.warning("Requires Users Body")
       return .badRequest(.init(body: .json(.init(message: "Requires Users Body"))))
@@ -51,7 +74,7 @@ extension APIHandler {
         .filter(\.$id, .equal, userID).limit(1).count()
     } catch {
       logger.error("Failed to load data from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load data from DB"))))
     }
 
     guard userCount > 0 else {
@@ -72,7 +95,7 @@ extension APIHandler {
         .update()
     } catch {
       logger.error("Failed to update User")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to update User"))))
     }
 
     do {
@@ -87,7 +110,13 @@ extension APIHandler {
       return .ok(.init(body: .json(user.componentUser)))
     } catch {
       logger.error("Failed to load data from DB")
-      throw error
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load data from DB"
+            )))
+      )
     }
   }
 }

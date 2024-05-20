@@ -10,6 +10,11 @@ extension APIHandler {
 
     logger.info("Start Generate Token")
 
+    guard let authUser = AuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let userID = UUID(uuidString: input.query.userID) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
@@ -17,14 +22,20 @@ extension APIHandler {
 
     do {
       logger.info("Loading User Data id: \(userID)")
-      guard try await User.find(userID, on: app.db) != nil else {
+      guard let user = try await User.find(userID, on: app.db) else {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+
+      guard user.email == authUser.name else {
+        logger.warning("Invalid User ID")
+        return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+      }
+
       logger.info("Found User Data id: \(userID)")
     } catch {
       logger.error("Failed to load from DB")
-      throw error
+      return .internalServerError(.init(body: .json(.init(message: "Failed to load from DB"))))
     }
 
     let tokenId = UUID()
@@ -90,27 +101,36 @@ extension APIHandler {
     let logger = Logger(label: "Rovoke Token API request-id: \(UUID())")
     logger.info("Start Revoke Token")
 
+    guard let authUser = BearerAuthenticateUser.current else {
+      logger.warning("Not Authorized")
+      return .unauthorized(.init())
+    }
+
     guard let tokenId = UUID(uuidString: input.query.tokenId) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 
-    let tokenCount: Int
     do {
       logger.info("Fetching User Token from DB")
-      tokenCount = try await UserToken.query(on: app.db)
-        .filter(\UserToken.$id, .equal, tokenId)
-        .limit(1)
-        .count()
+      guard let token = try await UserToken.find(tokenId, on: app.db) else {
+        logger.warning("Not Found Token in DB")
+        return .notFound(.init())
+      }
+      guard token.userId == authUser.userId else {
+        logger.warning("Invalid User ID")
+        return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+      }
       logger.info("Found User Token on DB")
     } catch {
       logger.error("Failed to load Token data from DB")
-      throw error
-    }
-
-    guard tokenCount > 0 else {
-      logger.warning("Not Found Token in DB")
-      return .notFound(.init())
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Token data from DB"
+            )))
+      )
     }
 
     var query = UserToken.query(on: app.db)
@@ -125,7 +145,13 @@ extension APIHandler {
       logger.info("Uploaded User Token id: \(tokenId)")
     } catch {
       logger.error("Failed to update reveke date")
-      throw error
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to update reveke date"
+            )))
+      )
     }
 
     return .ok(.init())

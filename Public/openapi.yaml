@@ -58,6 +58,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '500':
           description: Internal Error
           content:
@@ -93,6 +95,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Basic Authorization Error
         '404':
           description: not found user
         '500':
@@ -125,8 +129,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: Token not found
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /locationDetail:
     get:
       security:
@@ -163,6 +175,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: Location not found
         '500':
@@ -201,8 +215,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: User not found
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     patch:
       tags:
         - User
@@ -236,9 +258,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
         '404':
           description: User not found
-
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 security:
   - basicAuth: []
   - bearerAuth: []
