@@ -93,6 +93,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Basic Authorization Error
         '404':
           description: not found user
         '500':

@@ -6,6 +6,10 @@ extension APIHandler {
   func generateToken(
     _ input: Operations.generateToken.Input
   ) async throws -> Operations.generateToken.Output {
+    guard let basicAuthUser = BasicAuthenticateUser.current else {
+      return .unauthorized(.init())
+    }
+
     let logger = Logger(label: "Generate Token API request-id: \(UUID())")
 
     logger.info("Start Generate Token")
@@ -17,10 +21,15 @@ extension APIHandler {
 
     do {
       logger.info("Loading User Data id: \(userID)")
-      guard try await User.find(userID, on: app.db) != nil else {
+      guard let user = try await User.find(userID, on: app.db) else {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
+      
+      guard user.email == basicAuthUser.name else {
+        return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
+      }
+      
       logger.info("Found User Data id: \(userID)")
     } catch {
       logger.error("Failed to load from DB")
