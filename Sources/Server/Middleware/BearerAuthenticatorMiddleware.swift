@@ -72,7 +72,7 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       logger.warning("Token is revoked")
       return try await next(request, body, metadata)
     }
-    
+
     let authenticateUser = BearerAuthenticateUser(userID: userToken.userId)
 
     return try await BearerAuthenticateUser.$current.withValue(authenticateUser) {

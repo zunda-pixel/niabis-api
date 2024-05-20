@@ -37,7 +37,13 @@ extension APIHandler {
       location = fetchedLocation
     } catch {
       logger.error("Failed to fetch Location from Tripadvisor")
-      return .internalServerError(.init(body: .json(.init(message: "Failed to fetch Location from Tripadvisor"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to fetch Location from Tripadvisor"
+            )))
+      )
     }
 
     let locationDetail: Location
@@ -50,7 +56,13 @@ extension APIHandler {
       logger.info("Fetched Location Detail id: \(locationDetail.id)")
     } catch {
       logger.error("Failed to load Location Detail")
-      return .internalServerError(.init(body: .json(.init(message: "Failed to load Location Detail"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Location Detail"
+            )))
+      )
     }
 
     let tripadvisorPhotoURLs: [URL]
@@ -64,7 +76,13 @@ extension APIHandler {
       logger.info("Fetched Location Photo URLs")
     } catch {
       logger.error("Failed to load Location Photo URLs")
-      return .internalServerError(.init(body: .json(.init(message: "Failed to load Location Photo URLs"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Location Photo URLs"
+            )))
+      )
     }
 
     return .ok(

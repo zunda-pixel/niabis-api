@@ -9,7 +9,7 @@ extension APIHandler {
     let logger = Logger(label: "Generate Token API request-id: \(UUID())")
 
     logger.info("Start Generate Token")
-    
+
     guard let authUser = AuthenticateUser.current else {
       logger.warning("Not Authorized")
       return .unauthorized(.init())
@@ -26,12 +26,12 @@ extension APIHandler {
         logger.warning("Not Found User")
         return .notFound(.init())
       }
-      
+
       guard user.email == authUser.name else {
         logger.warning("Invalid User ID")
         return .badRequest(.init(body: .json(.init(message: "Invalid User ID"))))
       }
-      
+
       logger.info("Found User Data id: \(userID)")
     } catch {
       logger.error("Failed to load from DB")
@@ -105,7 +105,7 @@ extension APIHandler {
       logger.warning("Not Authorized")
       return .unauthorized(.init())
     }
-    
+
     guard let tokenId = UUID(uuidString: input.query.tokenId) else {
       logger.warning("Invalid UUID")
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
@@ -113,7 +113,7 @@ extension APIHandler {
 
     do {
       logger.info("Fetching User Token from DB")
-      guard let token = try await UserToken.find(tokenId, on: app.db) else{
+      guard let token = try await UserToken.find(tokenId, on: app.db) else {
         logger.warning("Not Found Token in DB")
         return .notFound(.init())
       }
@@ -124,7 +124,13 @@ extension APIHandler {
       logger.info("Found User Token on DB")
     } catch {
       logger.error("Failed to load Token data from DB")
-      return  .internalServerError(.init(body: .json(.init(message: "Failed to load Token data from DB"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to load Token data from DB"
+            )))
+      )
     }
 
     var query = UserToken.query(on: app.db)
@@ -139,7 +145,13 @@ extension APIHandler {
       logger.info("Uploaded User Token id: \(tokenId)")
     } catch {
       logger.error("Failed to update reveke date")
-      return .internalServerError(.init(body: .json(.init(message: "Failed to update reveke date"))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to update reveke date"
+            )))
+      )
     }
 
     return .ok(.init())
