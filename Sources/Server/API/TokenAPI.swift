@@ -111,7 +111,6 @@ extension APIHandler {
       return .badRequest(.init(body: .json(.init(message: "Invalid UUID"))))
     }
 
-    let tokenCount: Int
     do {
       logger.info("Fetching User Token from DB")
       guard let token = try await UserToken.find(tokenId, on: app.db) else{
