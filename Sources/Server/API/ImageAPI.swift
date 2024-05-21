@@ -43,7 +43,8 @@ extension APIHandler {
     do {
       let client = ImagesClient(
         apiToken: cloudflareApiToken,
-        accountId: cloudflareAccountId
+        accountId: cloudflareAccountId,
+        httpClient: .urlSession(.shared)
       )
       logger.info("Uploading Image URL")
       uploadedImage = try await client.upload(imageURL: imageURL)
@@ -87,7 +88,8 @@ extension APIHandler {
     do {
       let client = ImagesClient(
         apiToken: cloudflareApiToken,
-        accountId: cloudflareAccountId
+        accountId: cloudflareAccountId,
+        httpClient: .urlSession(.shared)
       )
       logger.info("Uploading Image Data")
       uploadedImage = try await client.upload(imageData: imageData)
