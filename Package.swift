@@ -23,7 +23,7 @@ let package = Package(
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.2.0"),
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.3"), // TODO
     .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
-    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.0.2"),
+    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.1.0"),
   ],
   targets: [
     .executableTarget(
