@@ -27,7 +27,7 @@ let package = Package(
   ],
   targets: [
     .executableTarget(
-      name: "Server",
+      name: "App",
       dependencies: [
         .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
         .product(name: "OpenAPIVapor", package: "swift-openapi-vapor"),
@@ -46,9 +46,9 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "ServerTests",
+      name: "AppTests",
       dependencies: [
-        .target(name: "Server")
+        .target(name: "App")
       ],
       resources: [
         .process("Resources"),
