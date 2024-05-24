@@ -13,6 +13,7 @@ services:
   swift-test:
     build:
       context: .
+      dockerfile: TestDockerfile
     working_dir: /build
     command: ["swift", "test"]
     depends_on:
