@@ -1,5 +1,5 @@
 {
-  "originHash" : "4613951575b61bac84d7d56a81a48b47aca023cfccba5a681548d5026ba3aa6a",
+  "originHash" : "ab80c4436b261ff92b36b2eb5138f616b23552f3460e4501df91cfa262f59841",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/cloudflare-swift",
       "state" : {
-        "revision" : "a8dfb95105c80a6988888c4d678b6f6152b599b7",
-        "version" : "0.1.0"
+        "revision" : "15b3dbff18c13e425928eb88691d3fdb29da4d6f",
+        "version" : "0.1.1"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/fluent-postgres-driver",
       "state" : {
-        "revision" : "e44fcc8c788807ab4987d68097563f058c0e2031",
-        "version" : "2.9.1"
+        "revision" : "e2988a8c960196eca2891f3a0bb1caad9044e7ea",
+        "version" : "2.9.2"
       }
     },
     {
@@ -103,10 +103,10 @@
     {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vapor/multipart-kit.git",
+      "location" : "https://github.com/vapor/multipart-kit",
       "state" : {
-        "revision" : "3c9558f8339c95782ab89db1aa43acb4bf32b448",
-        "version" : "4.6.1"
+        "revision" : "a31236f24bfd2ea2f520a74575881f6731d7ae68",
+        "version" : "4.7.0"
       }
     },
     {
@@ -177,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "46989693916f56d1186bd59ac15124caef896560",
-        "version" : "1.3.1"
+        "revision" : "0fbc8848e389af3bb55c182bc19ca9d5dc2f255b",
+        "version" : "1.4.0"
       }
     },
     {
@@ -319,7 +319,7 @@
     {
       "identity" : "swift-nio-extras",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-nio-extras.git",
+      "location" : "https://github.com/apple/swift-nio-extras",
       "state" : {
         "revision" : "a3b640d7dc567225db7c94386a6e71aded1bfa63",
         "version" : "1.22.0"
@@ -382,7 +382,7 @@
     {
       "identity" : "swift-openapi-runtime",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-openapi-runtime",
+      "location" : "https://github.com/apple/swift-openapi-runtime.git",
       "state" : {
         "revision" : "9a8291fa2f90cc7296f2393a99bb4824ee34f869",
         "version" : "1.4.0"
@@ -456,8 +456,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
       "state" : {
-        "revision" : "50c619665760c903e9084772ebdb25877cf2d344",
-        "version" : "4.100.1"
+        "revision" : "cc98361cbec22757a89a9717836293f215a0f67d",
+        "version" : "4.101.0"
       }
     },
     {
