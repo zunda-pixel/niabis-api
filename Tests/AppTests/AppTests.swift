@@ -3,9 +3,9 @@ import JWTKit
 import Vapor
 import XCTest
 
-@testable import Server
+@testable import App
 
-final class ServerTests: XCTestCase {
+final class AppTests: XCTestCase {
   let app: Application = {
     var env = try! Environment.detect()
     let app = Application(env)
