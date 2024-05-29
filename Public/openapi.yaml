@@ -15,7 +15,7 @@ externalDocs:
   url: https://niabis-api.readme.io/
 servers:
   - url: https://api.niabis.com/
-    description: Producction deployment.
+    description: Production deployment.
   - url: http://localhost:8080/
     description: Local Host deployment.
 tags:
