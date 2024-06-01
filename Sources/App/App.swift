@@ -72,7 +72,11 @@ struct App {
         LoggingMiddleware(bodyLoggingConfiguration: .upTo(maxBytes: 1024)),
         MetricsMiddleware(counterPrefix: "NiaBisServer"),
         BearerAuthenticatorMiddleware(app: app, excludeOperationIDs: ["generateToken"]),
-        BasicAuthenticatorMiddleware(operationIDs: ["generateToken"]),
+        BasicAuthenticatorMiddleware(
+          operationIDs: ["generateToken"],
+          supabaseURL: URL(string: Environment.get("SUPABASE_PROJECT_URL")!)!,
+          supabaseKey: Environment.get("SUPABASE_API_KEY")!
+        ),
       ]
     )
 

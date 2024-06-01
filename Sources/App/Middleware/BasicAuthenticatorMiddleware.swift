@@ -8,10 +8,20 @@ import Vapor
 struct BasicAuthenticatorMiddleware: ServerMiddleware {
   let operationIDs: [String]
   let logger: Logger
+  let supabase: SupabaseClient
 
-  init(operationIDs: [String]) {
+  init(
+    operationIDs: [String],
+    supabaseURL: URL,
+    supabaseKey supabaseApiKey: String
+  ) {
     self.operationIDs = operationIDs
     self.logger = Logger(label: "Basic Authenticator Middleware")
+    self.supabase = SupabaseClient(
+      supabaseURL: supabaseURL,
+      supabaseKey: supabaseApiKey,
+      options: .init(auth: .init(storage: EmptyAuthLocalStorage()))
+    )
   }
 
   func intercept(
@@ -38,15 +48,9 @@ struct BasicAuthenticatorMiddleware: ServerMiddleware {
       return try await next(request, body, metadata)
     }
 
-    let supabase = SupabaseClient(
-      supabaseURL: URL(string: Environment.get("SUPABASE_PROJECT_URL")!)!,
-      supabaseKey: Environment.get("SUPABASE_API_KEY")!,
-      options: .init(auth: .init(storage: EmptyAuthLocalStorage()))
-    )
-
     do {
       logger.info("Start Supabase SignIn userName: \(basicAuthorization.username)")
-      try await supabase.auth.signIn(
+      try await self.supabase.auth.signIn(
         email: basicAuthorization.username,
         password: basicAuthorization.password
       )
