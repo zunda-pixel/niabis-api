@@ -23,7 +23,7 @@ struct App {
       d: Environment.get("EdDSA_PRIVATE_KEY")!,
       curve: .ed25519
     )
-    await app.jwt.keys.addEdDSA(key: privateKey)
+    await app.jwt.keys.add(eddsa: privateKey)
 
     let registry = PrometheusCollectorRegistry()
     MetricsSystem.bootstrap(PrometheusMetricsFactory(registry: registry))
