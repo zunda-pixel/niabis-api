@@ -38,7 +38,7 @@ final class AppTests: XCTestCase {
         d: "T8s3Xh9Aulyq0UqIkggCgDyyXQKzPgIWH0w4Cb1O3Yg=",
         curve: .ed25519
       )
-      await app.jwt.keys.addEdDSA(key: privateKey)
+      await app.jwt.keys.add(eddsa: privateKey)
       return APIHandler(
         app: app,
         tripadvisorApiKey: Environment.get("TRIPADVISOR_API_KEY")!,
