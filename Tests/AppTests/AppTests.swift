@@ -1,11 +1,12 @@
 import FluentPostgresDriver
 import JWTKit
 import Vapor
-import XCTest
+import Testing
 
 @testable import App
 
-final class AppTests: XCTestCase {
+@Suite
+final class AppTests {
   let app: Application = {
     var env = try! Environment.detect()
     let app = Application(env)
@@ -48,7 +49,8 @@ final class AppTests: XCTestCase {
     }
   }
 
-  func testUploadImageWithData() async throws {
+  @Test
+  func uploadImageWithData() async throws {
     let filePath = Bundle.module.url(forResource: "Swift_logo", withExtension: "svg")!
     let imageData = try Data(contentsOf: filePath)
     let authUser = BearerAuthenticateUser(
@@ -60,7 +62,8 @@ final class AppTests: XCTestCase {
     _ = try response.ok.body.json.id
   }
 
-  func testUploadImageWithURL() async throws {
+  @Test
+  func uploadImageWithURL() async throws {
     let imageURL = URL(string: "https://developer.apple.com/swift/images/swift-og.png")!
     let authUser = BearerAuthenticateUser(
       userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
@@ -73,17 +76,19 @@ final class AppTests: XCTestCase {
     _ = try response.ok.body.json.id
   }
 
-  func testGetUserById() async throws {
+  @Test
+  func getUserById() async throws {
     let userID = UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     let authUser = BearerAuthenticateUser(userId: userID)
     let response = try await BearerAuthenticateUser.$current.withValue(authUser) {
       try await handler.getUserById(query: .init(userID: userID.uuidString))
     }
     let json = try response.ok.body.json
-    XCTAssertEqual(json, .init(id: userID.uuidString, email: "test@niabis.com"))
+    #expect(json == .init(id: userID.uuidString, email: "test@niabis.com"))
   }
 
-  func testGetLocation() async throws {
+  @Test
+  func getLocation() async throws {
     let authUser = BearerAuthenticateUser(
       userId: UUID(uuidString: "3cf9d5e6-2173-4d48-9a23-8906d0d48cab")!
     )
@@ -98,14 +103,12 @@ final class AppTests: XCTestCase {
 
     let location = try response.ok.body.json
 
-    XCTAssertEqual(location.id, 789274)
-    XCTAssertEqual(
-      location.description,
-      #"Ristorante Salumeria Roscioli is a multi-function delicatessen, an unconventional restaurant, and a rich and varied wine bar, where the cuisine is based on high quality materials selected over the years by the Roscioli brothers and an attentive and ready staff. The menu presents traditional starters and main dishes, as well as the results of conceptions from the national cuisine – raw fish from the Mediterranean and Tyrrhenian, selections of French or Italian Alpine cheeses, classified by typology and maturation, but also cold cuts of Spanish or native origin, all cut by hand."#
+    #expect(location.id == 789274)
+    #expect(
+      location.description == #"Ristorante Salumeria Roscioli is a multi-function delicatessen, an unconventional restaurant, and a rich and varied wine bar, where the cuisine is based on high quality materials selected over the years by the Roscioli brothers and an attentive and ready staff. The menu presents traditional starters and main dishes, as well as the results of conceptions from the national cuisine – raw fish from the Mediterranean and Tyrrhenian, selections of French or Italian Alpine cheeses, classified by typology and maturation, but also cold cuts of Spanish or native origin, all cut by hand."#
     )
-    XCTAssertEqual(
-      location.cuisines,
-      [
+    #expect(
+      location.cuisines == [
         .init(name: "deli", localizedName: "Deli"),
         .init(name: "italian", localizedName: "Italian"),
         .init(name: "mediterranean", localizedName: "Mediterranean"),
@@ -115,9 +118,8 @@ final class AppTests: XCTestCase {
         .init(name: "centralitalian", localizedName: "Central-Italian"),
       ]
     )
-    XCTAssertEqual(
-      location.imageURLs,
-      [
+    #expect(
+      location.imageURLs == [
         URL(
           string:
             "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg"
@@ -133,7 +135,8 @@ final class AppTests: XCTestCase {
     )
   }
 
-  func testGenerateToken() async throws {
+  @Test
+  func generateToken() async throws {
     let authUser = AuthenticateUser(name: "test@niabis.com")
     let response = try await AuthenticateUser.$current.withValue(authUser) {
       try await handler.generateToken(
@@ -143,7 +146,8 @@ final class AppTests: XCTestCase {
     _ = try response.ok.body.json
   }
 
-  func testRevokeToken() async throws {
+  @Test
+  func revokeToken() async throws {
     let basicAuthUser = AuthenticateUser(name: "test@niabis.com")
 
     let tokenResponse = try await AuthenticateUser.$current.withValue(basicAuthUser) {
