@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install swiftly
-        run: curl -L https://swift-server.github.io/swiftly/swiftly-install.sh | bash -s -- --disable-confirmation
+        run: curl -L https://swiftlang.github.io/swiftly/swiftly-install.sh | bash -s -- --disable-confirmation
       - name: Install Swift
         run: swiftly install latest
       - name: Show Swift version
