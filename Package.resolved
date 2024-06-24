@@ -1,5 +1,5 @@
 {
-  "originHash" : "2379ade45cefd8a7d8b6dac721e0d9dc2db38d6a452d4283fa49ae8c0435198e",
+  "originHash" : "99d00573bbb8aa93e25d3c5ba491d01e60782d6facf4289fdd37696145baf7ec",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -33,7 +33,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/cloudflare-swift",
       "state" : {
-        "revision" : "15b3dbff18c13e425928eb88691d3fdb29da4d6f",
+        "revision" : "ca79cbdd43a717c9a9d560975bd5cad4e4388517",
         "version" : "0.1.1"
       }
     },
@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift",
       "state" : {
-        "revision" : "40112d26f2f1a58a989fee10dce85de49b0b8e7b",
-        "version" : "2.13.2"
+        "revision" : "a50157fb848e1748aaf432ed36f71604cfa96d29",
+        "version" : "2.13.3"
       }
     },
     {
