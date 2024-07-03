@@ -1,7 +1,7 @@
 import FluentPostgresDriver
 import JWTKit
-import Vapor
 import Testing
+import Vapor
 
 @testable import App
 
@@ -104,7 +104,8 @@ final class AppTests {
 
     #expect(location.id == 789274)
     #expect(
-      location.description == #"Ristorante Salumeria Roscioli is a multi-function delicatessen, an unconventional restaurant, and a rich and varied wine bar, where the cuisine is based on high quality materials selected over the years by the Roscioli brothers and an attentive and ready staff. The menu presents traditional starters and main dishes, as well as the results of conceptions from the national cuisine – raw fish from the Mediterranean and Tyrrhenian, selections of French or Italian Alpine cheeses, classified by typology and maturation, but also cold cuts of Spanish or native origin, all cut by hand."#
+      location.description
+        == #"Ristorante Salumeria Roscioli is a multi-function delicatessen, an unconventional restaurant, and a rich and varied wine bar, where the cuisine is based on high quality materials selected over the years by the Roscioli brothers and an attentive and ready staff. The menu presents traditional starters and main dishes, as well as the results of conceptions from the national cuisine – raw fish from the Mediterranean and Tyrrhenian, selections of French or Italian Alpine cheeses, classified by typology and maturation, but also cold cuts of Spanish or native origin, all cut by hand."#
     )
     #expect(
       location.cuisines == [
@@ -118,19 +119,21 @@ final class AppTests {
       ]
     )
     #expect(
-      location.imageURLs == [
-        URL(
-          string:
-            "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg"
-        )!,
-        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/38/60/wines.jpg")!,
-        URL(
-          string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/6e/cacio-e-pepe.jpg")!,
-        URL(
-          string:
-            "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/68/nabil-hassen-the-chef.jpg")!,
-        URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/64/gnocchi.jpg")!,
-      ].map(\.absoluteString)
+      location.imageURLs
+        == [
+          URL(
+            string:
+              "https://media-cdn.tripadvisor.com/media/photo-m/1280/17/9f/ae/cb/a-multi-functional-deli.jpg"
+          )!,
+          URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/38/60/wines.jpg")!,
+          URL(
+            string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/6e/cacio-e-pepe.jpg")!,
+          URL(
+            string:
+              "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/68/nabil-hassen-the-chef.jpg"
+          )!,
+          URL(string: "https://media-cdn.tripadvisor.com/media/photo-o/12/1c/77/64/gnocchi.jpg")!,
+        ].map(\.absoluteString)
     )
   }
 
