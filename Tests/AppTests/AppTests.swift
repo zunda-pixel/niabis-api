@@ -5,7 +5,6 @@ import Testing
 
 @testable import App
 
-@Suite
 final class AppTests {
   let app: Application = {
     var env = try! Environment.detect()
