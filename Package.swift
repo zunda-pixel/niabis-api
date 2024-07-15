@@ -9,7 +9,7 @@ let package = Package(
     .iOS(.v13),
     .tvOS(.v13),
     .watchOS(.v6),
-    .visionOS(.v1)
+    .visionOS(.v1),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.2.1"),
@@ -20,7 +20,7 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-metrics", from: "2.4.1"),
     .package(url: "https://github.com/swift-server/swift-prometheus", from: "2.0.0"),
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.2.0"),
-    .package(url: "https://github.com/vapor/jwt", from: "5.0.0-rc.1"), // TODO
+    .package(url: "https://github.com/vapor/jwt", from: "5.0.0-rc.1"),  // TODO
     .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
     .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.2.0"),
     .package(url: "https://github.com/apple/swift-testing", from: "0.7.0"),
@@ -55,7 +55,7 @@ let package = Package(
         .product(name: "Testing", package: "swift-testing"),
       ],
       resources: [
-        .process("Resources"),
+        .process("Resources")
       ]
     ),
   ]
