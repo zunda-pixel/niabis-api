@@ -14,7 +14,6 @@ struct App {
     try LoggingSystem.bootstrap(from: &env)
 
     let app = try await Application.make(env)
-    defer { app.shutdown() }
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
 
@@ -82,8 +81,10 @@ struct App {
 
     do {
       try await app.execute()
+      try await app.asyncShutdown()
     } catch {
       app.logger.report(error: error)
+      try? await app.asyncShutdown()
       throw error
     }
   }
