@@ -5,11 +5,7 @@ import PackageDescription
 let package = Package(
   name: "niabis-api",
   platforms: [
-    .macOS(.v13),
-    .iOS(.v13),
-    .tvOS(.v13),
-    .watchOS(.v6),
-    .visionOS(.v1),
+    .macOS(.v14),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.2.1"),
@@ -42,7 +38,7 @@ let package = Package(
         .product(name: "ImagesClient", package: "cloudflare-swift"),
       ],
       swiftSettings: [
-        .swiftLanguageVersion(.v5)
+        .swiftLanguageMode(.v5)
       ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
