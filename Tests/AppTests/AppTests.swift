@@ -1,9 +1,8 @@
+import App
 import FluentPostgresDriver
 import JWTKit
 import Testing
 import Vapor
-
-@testable import App
 
 final class AppTests {
   let app: Application = {
