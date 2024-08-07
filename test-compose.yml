@@ -15,7 +15,7 @@ services:
       context: .
       dockerfile: TestDockerfile
     working_dir: /build
-    command: ["swift", "test"]
+    command: ["swift", "test", "--enable-swift-testing", "--parallel"]
     depends_on:
       - db
     environment:
