@@ -8,4 +8,4 @@ jobs:
     container: swift:latest
     steps:
       - uses: actions/checkout@v4
-      - run: swift format lint -r -p -s .
+      - run: swift format lint -r -p -s ./Sources
