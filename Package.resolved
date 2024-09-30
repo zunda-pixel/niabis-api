@@ -101,6 +101,15 @@
       }
     },
     {
+      "identity" : "multipartformdata",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/grdsdev/MultipartFormData",
+      "state" : {
+        "revision" : "ed7abea9cfc6c3b5e77a73fe6842c57a372d2017",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "openapikit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattpolzin/OpenAPIKit",
@@ -150,8 +159,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift",
       "state" : {
-        "revision" : "6a88cc5916c01c12507e18da413461fe7d8a21fc",
-        "version" : "2.15.2"
+        "revision" : "b159fb95a300cb2e85a193688748e2a10b612dea",
+        "version" : "2.20.0"
       }
     },
     {
