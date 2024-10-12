@@ -18,7 +18,7 @@ let package = Package(
     .package(url: "https://github.com/vapor/jwt", from: "5.0.0"),
     .package(url: "https://github.com/supabase/supabase-swift", from: "2.20.1"),
     .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.5.0"),
-    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.2.0"),
+    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.6.0"),
   ],
   targets: [
     .executableTarget(

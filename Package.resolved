@@ -1,5 +1,5 @@
 {
-  "originHash" : "68ad0de20d9514db674fe73da3887c52424a7eb3db3438dcf2bff67e7c3de6bc",
+  "originHash" : "9af21c900582923e532c6e8edd943e496fd5bc4a8fa604274e84b2ec911c9b44",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/cloudflare-swift",
       "state" : {
-        "revision" : "dad978472688725e962c2f68b4037ebc6bf5fb73",
-        "version" : "0.5.0"
+        "revision" : "429a21bd486c55c5e20580d27914ce24c3149d2a",
+        "version" : "0.6.0"
       }
     },
     {
