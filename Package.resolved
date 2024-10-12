@@ -1,5 +1,5 @@
 {
-  "originHash" : "87aeb4a61abf601bd1920eabbd2e63f2d55b5c196801e8a7a15fd1cb8f3b17d4",
+  "originHash" : "68ad0de20d9514db674fe73da3887c52424a7eb3db3438dcf2bff67e7c3de6bc",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -402,8 +402,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/zunda-pixel/tripadvisor-swift",
       "state" : {
-        "revision" : "bf2690c51d437e36b4823226c3bb0a6abb6c0d9d",
-        "version" : "0.4.0"
+        "revision" : "f70ca5161fc717ad5ed2b9fdb700f2bc7e49379c",
+        "version" : "0.5.0"
       }
     },
     {
