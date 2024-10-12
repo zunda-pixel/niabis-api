@@ -17,11 +17,11 @@ struct App {
 
     app.get("openapi") { request in request.redirect(to: "openapi.html", redirectType: .permanent) }
 
-    let privateKey = try EdDSA.PrivateKey(
-      x: Environment.get("EdDSA_PUBLIC_KEY")!,
+    let privateKey = try EdDSA.PrivateKey.init(
       d: Environment.get("EdDSA_PRIVATE_KEY")!,
       curve: .ed25519
     )
+
     await app.jwt.keys.add(eddsa: privateKey)
 
     let registry = PrometheusCollectorRegistry()
