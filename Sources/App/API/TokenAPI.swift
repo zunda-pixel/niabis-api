@@ -46,10 +46,16 @@ extension APIHandler {
       revokedDate: nil
     )
 
-    let payload = UserPayload(
+    let tokenPayload = UserTokenPayload(
       id: .init(value: tokenId.uuidString),
       userId: .init(value: input.query.userID),
-      expiration: .init(value: .distantFuture)
+      expiration: .init(value: .now.addingTimeInterval(60 * 10))
+    )
+    
+    let refreshTokenPayload = UserTokenPayload(
+      id: .init(value: tokenId.uuidString),
+      userId: .init(value: input.query.userID),
+      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30)) // 1 month(30 days)
     )
 
     do {
@@ -67,10 +73,12 @@ extension APIHandler {
     }
 
     let token: String
+    let refreshToken: String
 
     do {
       logger.info("Signing Payload with key")
-      token = try await app.jwt.keys.sign(payload)
+      token = try await app.jwt.keys.sign(tokenPayload)
+      refreshToken = try await app.jwt.keys.sign(refreshTokenPayload)
       logger.info("Signed Payload with key")
     } catch {
       logger.error("Failed to generate token")
@@ -88,7 +96,9 @@ extension APIHandler {
           .init(
             id: tokenId.uuidString,
             token: token,
-            expireDate: payload.expiration.value
+            tokenExpireDate: tokenPayload.expiration.value,
+            refreshToken: refreshToken,
+            refreshTokenExpireDate: refreshTokenPayload.expiration.value
           )
         )
       )
@@ -134,7 +144,6 @@ extension APIHandler {
     }
 
     var query = UserToken.query(on: app.db)
-
     query = query.set(\.$revokedDate, to: Date())
 
     do {

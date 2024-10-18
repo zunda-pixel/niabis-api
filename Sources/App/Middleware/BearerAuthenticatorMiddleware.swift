@@ -42,11 +42,11 @@ struct BearerAuthenticatorMiddleware: ServerMiddleware {
       return try await next(request, body, metadata)
     }
 
-    let payload: UserPayload
+    let payload: UserTokenPayload
 
     do {
       logger.info("Verifying token")
-      payload = try await app.jwt.keys.verify(token, as: UserPayload.self)
+      payload = try await app.jwt.keys.verify(token, as: UserTokenPayload.self)
       logger.info("Verified token id: \(payload.id)")
     } catch {
       logger.error("Failed to verifiy token")

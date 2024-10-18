@@ -355,7 +355,14 @@ components:
         token:
           type: string
           description: Email address.
-        expireDate:
+        tokenExpireDate:
+          type: string
+          format: date-time
+          description: Expired date.
+        refreshToken:
+          type: string
+          description: Email address.
+        refreshTokenExpireDate:
           type: string
           format: date-time
           description: Expired date.
