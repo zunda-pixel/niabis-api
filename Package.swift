@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "niabis-api",
   platforms: [
-    .macOS(.v14),
+    .macOS(.v14)
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.2.1"),
@@ -46,7 +46,7 @@ let package = Package(
     .testTarget(
       name: "AppTests",
       dependencies: [
-        .target(name: "App"),
+        .target(name: "App")
       ],
       resources: [
         .process("Resources")
