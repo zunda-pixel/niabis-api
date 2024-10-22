@@ -8,4 +8,4 @@ jobs:
     container: swiftlang/swift:nightly-main-jammy
     steps:
       - uses: actions/checkout@v4
-      - run: swift format lint -r -p -s ./Sources
+      - run: swift format lint -r -p -s .
