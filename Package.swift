@@ -36,9 +36,6 @@ let package = Package(
         .product(name: "Supabase", package: "supabase-swift"),
         .product(name: "ImagesClient", package: "cloudflare-swift"),
       ],
-      swiftSettings: [
-        .swiftLanguageMode(.v5)
-      ],
       plugins: [
         .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator")
       ]

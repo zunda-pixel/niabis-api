@@ -405,7 +405,9 @@ components:
       required:
         - id
         - token
-        - expireDate
+        - tokenExpireDate
+        - refreshToken
+        - refreshTokenExpireDate
     RefreshToken:
       type: object
       description: A value with the RefreshToken contents.
