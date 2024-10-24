@@ -139,6 +139,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /refreshToken:
+    post:
+      tags:
+        - Authorization
+      summary: Refresh token
+      operationId: refreshToken
+      requestBody:
+        description: User Data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '400':
+          description: Request Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Bearer Authorization Error
+        '404':
+          description: Token not found
+        '500':
+          description: Internal Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /locationDetail:
     get:
       security:
@@ -355,14 +391,32 @@ components:
         token:
           type: string
           description: Email address.
-        expireDate:
+        tokenExpireDate:
+          type: string
+          format: date-time
+          description: Expired date.
+        refreshToken:
+          type: string
+          description: Email address.
+        refreshTokenExpireDate:
           type: string
           format: date-time
           description: Expired date.
       required:
         - id
         - token
-        - expireDate
+        - tokenExpireDate
+        - refreshToken
+        - refreshTokenExpireDate
+    RefreshToken:
+      type: object
+      description: A value with the RefreshToken contents.
+      properties:
+        refreshToken:
+          type: string
+          description: Expired date.
+      required:
+        - refreshToken
     URLImage:
       type: object
       description: A value with the URL Image contents.

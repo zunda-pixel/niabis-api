@@ -1,29 +1,24 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.0
 
 import PackageDescription
 
 let package = Package(
   name: "niabis-api",
   platforms: [
-    .macOS(.v13),
-    .iOS(.v13),
-    .tvOS(.v13),
-    .watchOS(.v6),
-    .visionOS(.v1)
+    .macOS(.v14)
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.2.1"),
+    .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.3.1"),
     .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.0.0"),
     .package(url: "https://github.com/swift-server/swift-openapi-vapor", from: "1.0.1"),
     .package(url: "https://github.com/vapor/fluent-postgres-driver", from: "2.8.0"),
     .package(url: "https://github.com/vapor/fluent", from: "4.9.0"),
-    .package(url: "https://github.com/apple/swift-format", from: "600.0.0"),
     .package(url: "https://github.com/apple/swift-metrics", from: "2.4.1"),
     .package(url: "https://github.com/swift-server/swift-prometheus", from: "2.0.0"),
-    .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.2.0"),
-    .package(url: "https://github.com/vapor/jwt", from: "5.0.0-beta.4"), // TODO
-    .package(url: "https://github.com/supabase/supabase-swift", from: "2.8.0"),
-    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.1.1"),
+    .package(url: "https://github.com/vapor/jwt", from: "5.0.0"),
+    .package(url: "https://github.com/supabase/supabase-swift", from: "2.20.2"),
+    .package(url: "https://github.com/zunda-pixel/tripadvisor-swift", from: "0.5.0"),
+    .package(url: "https://github.com/zunda-pixel/cloudflare-swift", from: "0.6.0"),
   ],
   targets: [
     .executableTarget(
@@ -48,10 +43,10 @@ let package = Package(
     .testTarget(
       name: "AppTests",
       dependencies: [
-        .target(name: "App"),
+        .target(name: "App")
       ],
       resources: [
-        .process("Resources"),
+        .process("Resources")
       ]
     ),
   ]

@@ -46,10 +46,16 @@ extension APIHandler {
       revokedDate: nil
     )
 
-    let payload = UserPayload(
+    let tokenPayload = UserTokenPayload(
       id: .init(value: tokenId.uuidString),
       userId: .init(value: input.query.userID),
-      expiration: .init(value: .distantFuture)
+      expiration: .init(value: .now.addingTimeInterval(60 * 10))
+    )
+
+    let refreshTokenPayload = UserTokenPayload(
+      id: .init(value: tokenId.uuidString),
+      userId: .init(value: input.query.userID),
+      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30))  // 1 month(30 days)
     )
 
     do {
@@ -67,10 +73,12 @@ extension APIHandler {
     }
 
     let token: String
+    let refreshToken: String
 
     do {
       logger.info("Signing Payload with key")
-      token = try await app.jwt.keys.sign(payload)
+      token = try await app.jwt.keys.sign(tokenPayload)
+      refreshToken = try await app.jwt.keys.sign(refreshTokenPayload)
       logger.info("Signed Payload with key")
     } catch {
       logger.error("Failed to generate token")
@@ -88,7 +96,9 @@ extension APIHandler {
           .init(
             id: tokenId.uuidString,
             token: token,
-            expireDate: payload.expiration.value
+            tokenExpireDate: tokenPayload.expiration.value,
+            refreshToken: refreshToken,
+            refreshTokenExpireDate: refreshTokenPayload.expiration.value
           )
         )
       )
@@ -134,7 +144,6 @@ extension APIHandler {
     }
 
     var query = UserToken.query(on: app.db)
-
     query = query.set(\.$revokedDate, to: Date())
 
     do {
@@ -155,5 +164,121 @@ extension APIHandler {
     }
 
     return .ok(.init())
+  }
+
+  func refreshToken(
+    _ input: Operations.refreshToken.Input
+  ) async throws -> Operations.refreshToken.Output {
+    let logger = Logger(label: "Refresh Token API request-id: \(UUID())")
+
+    logger.info("Start Refresh Token")
+
+    let refreshToken: String
+    switch input.body {
+    case .json(let body):
+      refreshToken = body.refreshToken
+    }
+
+    let payload: UserTokenPayload
+
+    do {
+      logger.info("Verifying token")
+      payload = try await app.jwt.keys.verify(refreshToken, as: UserTokenPayload.self)
+      logger.info("Verified token id: \(payload.id)")
+    } catch {
+      logger.error("Failed to verifiy token")
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to verifiy token"
+            ))))
+    }
+
+    var query = UserToken.query(on: app.db)
+    query = query.set(\.$revokedDate, to: Date())
+
+    do {
+      logger.info("Upadating User Token's revoked Date id: \(payload.id)")
+      try await query
+        .filter(\UserToken.$id, .equal, UUID(uuidString: payload.id.value)!)
+        .update()
+      logger.info("Uploaded User Token id: \(payload.id)")
+    } catch {
+      logger.error("Failed to update reveke date")
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to update reveke date"
+            )))
+      )
+    }
+
+    let newTokenId = UUID()
+
+    let newUserToken = UserToken(
+      id: newTokenId,
+      userId: UUID(uuidString: payload.userId.value)!,
+      revokedDate: nil
+    )
+
+    let newTokenPayload = UserTokenPayload(
+      id: .init(value: newTokenId.uuidString),
+      userId: .init(value: newUserToken.userId.uuidString),
+      expiration: .init(value: .now.addingTimeInterval(60 * 10))
+    )
+
+    let newRefreshTokenPayload = UserTokenPayload(
+      id: .init(value: newTokenId.uuidString),
+      userId: .init(value: newUserToken.userId.uuidString),
+      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30))  // 1 month(30 days)
+    )
+
+    do {
+      logger.info("Inserting New User Token id: \(newTokenId)")
+      try await newUserToken.create(on: app.db)
+      logger.info("Inserted New User Token id: \(newTokenId)")
+    } catch {
+      logger.error("Failed to save token information")
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to save token information"
+            ))))
+    }
+
+    let newToken: String
+    let newRefreshToken: String
+
+    do {
+      logger.info("Signing Payload with key")
+      newToken = try await app.jwt.keys.sign(newTokenPayload)
+      newRefreshToken = try await app.jwt.keys.sign(newRefreshTokenPayload)
+      logger.info("Signed Payload with key")
+    } catch {
+      logger.error("Failed to generate token")
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to generate token"
+            ))))
+    }
+
+    return .ok(
+      .init(
+        body: .json(
+          .init(
+            id: newTokenPayload.id.value,
+            token: newToken,
+            tokenExpireDate: newTokenPayload.expiration.value,
+            refreshToken: newRefreshToken,
+            refreshTokenExpireDate: newRefreshTokenPayload.expiration.value
+          )
+        )
+      )
+    )
   }
 }

@@ -1,6 +1,6 @@
 import JWTKit
 
-struct UserPayload: JWTPayload {
+struct UserTokenPayload: JWTPayload {
   var id: SubjectClaim
   var userId: SubjectClaim
   var expiration: ExpirationClaim
