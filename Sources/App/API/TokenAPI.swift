@@ -51,11 +51,11 @@ extension APIHandler {
       userId: .init(value: input.query.userID),
       expiration: .init(value: .now.addingTimeInterval(60 * 10))
     )
-    
+
     let refreshTokenPayload = UserTokenPayload(
       id: .init(value: tokenId.uuidString),
       userId: .init(value: input.query.userID),
-      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30)) // 1 month(30 days)
+      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30))  // 1 month(30 days)
     )
 
     do {
@@ -165,14 +165,14 @@ extension APIHandler {
 
     return .ok(.init())
   }
-  
+
   func refreshToken(
     _ input: Operations.refreshToken.Input
   ) async throws -> Operations.refreshToken.Output {
     let logger = Logger(label: "Refresh Token API request-id: \(UUID())")
 
     logger.info("Start Refresh Token")
-    
+
     let refreshToken: String
     switch input.body {
     case .json(let body):
@@ -187,14 +187,17 @@ extension APIHandler {
       logger.info("Verified token id: \(payload.id)")
     } catch {
       logger.error("Failed to verifiy token")
-      return .internalServerError(.init(body: .json(.init(
-        message: "Failed to verifiy token"
-      ))))
+      return .internalServerError(
+        .init(
+          body: .json(
+            .init(
+              message: "Failed to verifiy token"
+            ))))
     }
-    
+
     var query = UserToken.query(on: app.db)
     query = query.set(\.$revokedDate, to: Date())
-    
+
     do {
       logger.info("Upadating User Token's revoked Date id: \(payload.id)")
       try await query
@@ -225,13 +228,13 @@ extension APIHandler {
       userId: .init(value: newUserToken.userId.uuidString),
       expiration: .init(value: .now.addingTimeInterval(60 * 10))
     )
-    
+
     let newRefreshTokenPayload = UserTokenPayload(
       id: .init(value: newTokenId.uuidString),
       userId: .init(value: newUserToken.userId.uuidString),
-      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30)) // 1 month(30 days)
+      expiration: .init(value: .now.addingTimeInterval(60 * 60 * 24 * 30))  // 1 month(30 days)
     )
-    
+
     do {
       logger.info("Inserting New User Token id: \(newTokenId)")
       try await newUserToken.create(on: app.db)
@@ -245,7 +248,7 @@ extension APIHandler {
               message: "Failed to save token information"
             ))))
     }
-    
+
     let newToken: String
     let newRefreshToken: String
 
