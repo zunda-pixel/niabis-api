@@ -1,7 +1,7 @@
 import Fluent
 import Foundation
 
-final class UserToken: Model {
+final class UserToken: Model, @unchecked Sendable {
   static let schema = "user_tokens"
 
   @ID(key: .id)
