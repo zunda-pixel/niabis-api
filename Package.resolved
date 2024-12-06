@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/jwt",
       "state" : {
-        "revision" : "8ce7280a77ca45711f1b08bc1abfac7a2bb9c97b",
-        "version" : "5.1.0"
+        "revision" : "ec5a9d489a73560732c7a27ce860fe799b1413be",
+        "version" : "5.1.1"
       }
     },
     {
