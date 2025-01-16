@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift",
       "state" : {
-        "revision" : "a06e745c21c25268bea055a669224f06c9130f62",
-        "version" : "2.24.2"
+        "revision" : "e6a2db8c48f7fbf50047d32eeecc13e2c985476c",
+        "version" : "2.24.3"
       }
     },
     {
@@ -206,6 +206,15 @@
       "state" : {
         "revision" : "1fbb6ef21f1525ed5faf4c95207b9c11bea27e94",
         "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swift-clocks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-clocks",
+      "state" : {
+        "revision" : "cc46202b53476d64e824e0b6612da09d84ffde8e",
+        "version" : "1.0.6"
       }
     },
     {
