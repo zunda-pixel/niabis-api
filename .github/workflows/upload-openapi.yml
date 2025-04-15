@@ -12,7 +12,7 @@ on:
 
 jobs:
   rdme-openapi:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Check out repo 📚
         uses: actions/checkout@v4
